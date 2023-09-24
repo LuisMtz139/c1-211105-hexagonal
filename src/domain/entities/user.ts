@@ -1,4 +1,5 @@
 export class User{
+    token: string | undefined;
     constructor(
         readonly id:number,
         readonly name:string,
