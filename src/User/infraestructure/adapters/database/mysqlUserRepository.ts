@@ -8,7 +8,6 @@ import { UserRepository } from "../../../domain/repositories/userRepository";
 
 
 export class MysqlUserRepository implements UserRepository {
-  
 
   //Agregar
   async addUser(name: string, password: string, email: string, status: string): Promise<User> {
@@ -116,6 +115,31 @@ export class MysqlUserRepository implements UserRepository {
     }
  
 } 
+
+async updatePassword(id: number, newPassword: string): Promise<User | null> {
+  try {
+    const sql = `
+      UPDATE users
+      SET password = ?
+      WHERE id = ?
+    `;
+    const params: any[] = [newPassword, id];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró un usuario con el ID ${id}`);
+    }
+
+    // Assuming you need to fetch and return the updated user
+    const updatedUser = await this.getUserById(id);
+    return updatedUser;
+  } catch (error) {
+    console.error('Error al actualizar la contraseña del usuario:', error);
+    throw new Error('Error al actualizar la contraseña del usuario. Consulta los logs para más detalles.');
+  }
+}
+
+
 
 
 }

@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { addUserContoller, deleteUserController, getUserByIdController, usersContoller } from '../dependencies';
+import { addUserContoller, deleteUserController, getUserByIdController, updatePasswordUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -26,6 +26,12 @@ userRouter.get(
     "/getUser/:id",
      getUserByIdController.getUserId.bind(getUserByIdController)
 )
+
+userRouter.post(
+    '/updatePassword/',
+    updatePasswordUserController.updatePassword.bind(updatePasswordUserController)
+)
+
 
 
 

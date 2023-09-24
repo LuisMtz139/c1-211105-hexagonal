@@ -14,6 +14,7 @@ export interface UserRepository{
     getUserById(id:number): Promise<User | null>
 
     //actualizar contraseña
+    updatePassword(id: number, newPassword: string): Promise<User | null>;
 
 
 
