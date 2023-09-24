@@ -1,5 +1,6 @@
 import * as express from 'express';
-import { usersContoller } from '../dependencies';
+import { addUserContoller, deleteUserController, usersContoller } from '../dependencies';
+import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
 
@@ -7,13 +8,13 @@ userRouter.post(
     //ejemplo de funcionamiento
     //user+direccion
     "/addUser/",
-    usersContoller.addUser.bind(usersContoller)
+    addUserContoller.addUser.bind(addUserContoller)
 )
 
 userRouter.delete(
     //eliminar
     "/deleteUser/:userId",
-    usersContoller.deleteUser.bind(usersContoller)
+    deleteUserController.deleteUser.bind(deleteUserController)
 )
 
 userRouter.get(
