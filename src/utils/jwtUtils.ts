@@ -31,7 +31,7 @@ const verifyToken = (token: string): string | null => {
     return null;
   }
 };
-
+//verificar 
 const tokenRequired = (req: Request, res: Response, next: NextFunction): void => {
   let token: string | null = null;
 

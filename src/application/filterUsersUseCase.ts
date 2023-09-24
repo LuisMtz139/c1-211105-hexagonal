@@ -1,2 +1,2 @@
-//lista de usuarios que coninciden con con lo especifico
+//lista de usuarios que coninciden con lo especifico
 //email, nombre, celular

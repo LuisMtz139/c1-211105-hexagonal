@@ -7,5 +7,5 @@ export interface UserRepository{
 
     deleteUser(userId:string): Promise<boolean>;
 
-
+    getUserById(userId:String): Promise<User | null>;
 }

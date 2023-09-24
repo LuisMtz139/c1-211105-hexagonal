@@ -1,12 +1,14 @@
 import { query } from "../../../database/mysql";
 import { User } from "../../../domain/entities/user";
 import { UserRepository } from "../../../domain/repositories/userRepository";
-import { generateToken } from "../../../utils/jwtUtils";
+import { generateToken, verifyToken } from "../../../utils/jwtUtils";
 
 
 
 
 export class MysqlUserRepository implements UserRepository {
+  
+
   //Agregar
   async addUser(name: string, password: string, email: string, status: string): Promise<User> {
     try {
@@ -60,6 +62,9 @@ export class MysqlUserRepository implements UserRepository {
       throw new Error('Error al eliminar un usuario. Consulta los logs para más detalles.');
     }
   }
-  
-   
+
+
+  getUserById(userId: String): Promise<User | null> {
+    throw new Error("Method not implemented.");
+  }
 }
