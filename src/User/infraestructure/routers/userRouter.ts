@@ -15,3 +15,9 @@ userRouter.delete(
     "/deleteUser/:userId",
     usersContoller.deleteUser.bind(usersContoller)
 )
+
+userRouter.get(
+    //listar todo
+    "/listUser",
+    usersContoller.listAllUsers.bind(usersContoller)
+)
