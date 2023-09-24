@@ -1,7 +1,8 @@
-import { query } from "../../../database/mysql";
+import { query } from "../../../../database/mysql";
+import { generateToken } from "../../../../utils/jwtUtils";
 import { User } from "../../../domain/entities/user";
 import { UserRepository } from "../../../domain/repositories/userRepository";
-import { generateToken, verifyToken } from "../../../utils/jwtUtils";
+
 
 
 
@@ -64,7 +65,4 @@ export class MysqlUserRepository implements UserRepository {
   }
 
 
-  getUserById(userId: String): Promise<User | null> {
-    throw new Error("Method not implemented.");
-  }
 }

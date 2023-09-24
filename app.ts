@@ -1,7 +1,7 @@
 import express = require('express');
 import { Signale } from 'signale';
+import { userRouter } from './src/User/infraestructure/routers/userRouter';
 
-import { userRouter } from './src/infraestructure/routers/userRouter';
 
 const app = express();
 const signale = new Signale();
