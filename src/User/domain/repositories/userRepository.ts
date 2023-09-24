@@ -16,6 +16,8 @@ export interface UserRepository{
     //actualizar contraseña
     updatePassword(id: number, newPassword: string): Promise<User | null>;
 
-
-
+    //actualizar usuairo 
+    updateUser(id: number,
+        newUser?: { name?: string; password?: string; email?: string; status?: string }
+      ): Promise<User | null>;
 }

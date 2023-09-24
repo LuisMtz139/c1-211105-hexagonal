@@ -140,6 +140,37 @@ async updatePassword(id: number, newPassword: string): Promise<User | null> {
 }
 
 
+async updateUser(
+  id: number,
+  newUser?: { name?: string; password?: string; email?: string; status?: string }
+): Promise<User | null> {
+  try {
+    const { name, password, email, status } = newUser || {};
+
+    const sql = `
+      UPDATE users
+      SET name = ?, password = ?, email = ?, status = ?
+      WHERE id = ?
+    `;
+
+    const params: any[] = [name, password, email, status, id];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró un usuario con el ID ${id}`);
+    }
+
+    // Obtener y devolver el usuario actualizado
+    const updatedUser = await this.getUserById(id);
+    return updatedUser;
+  } catch (error) {
+    console.error('Error al actualizar el usuario:', error);
+    throw new Error('Error al actualizar el usuario. Consulta los logs para más detalles.');
+  }
+}
+
+
+
 
 
 }

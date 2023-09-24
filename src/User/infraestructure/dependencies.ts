@@ -9,6 +9,8 @@ import { GetUserByIdUseCase } from '../application/getUserByIdUseCase';
 import { GetUserByIdController } from './controllers/getUserByIdController';
 import { UpdatePasswordUserUseCase } from '../application/updatePasswordUserUseCase';
 import { UpdatePasswordUserController } from './controllers/updatePasswordUserController';
+import { UpdateUserUseCase } from '../application/updateUserUseCase';
+import { UpdateUserController } from './controllers/updateUserController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -19,6 +21,7 @@ export const deleteUserUseCase = new DeleteUserUseCase(mysqlUserRepository);
 export const listAllUserUseCase = new ListAllUserUseCase(mysqlUserRepository);
 export const getUserByIdUseCase = new GetUserByIdUseCase(mysqlUserRepository);
 export const updatePasswordUserUseCase = new UpdatePasswordUserUseCase(mysqlUserRepository);
+export const updateUserUseCase = new UpdateUserUseCase(mysqlUserRepository);
 
 
 
@@ -32,4 +35,8 @@ export const deleteUserController = new DeleteUserController(deleteUserUseCase)
 export const getUserByIdController = new GetUserByIdController(getUserByIdUseCase)
 
 export const updatePasswordUserController = new UpdatePasswordUserController(updatePasswordUserUseCase)
+
+export const updateUserController = new UpdateUserController(updateUserUseCase)
+
+
 
