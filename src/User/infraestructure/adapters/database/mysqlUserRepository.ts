@@ -8,6 +8,8 @@ import { UserRepository } from "../../../domain/repositories/userRepository";
 
 
 export class MysqlUserRepository implements UserRepository {
+  
+
   //Agregar
   async addUser(name: string, password: string, email: string, status: string): Promise<User> {
     try {
@@ -88,6 +90,32 @@ export class MysqlUserRepository implements UserRepository {
       throw new Error('Error al listar usuarios. Consulta los logs para más detalles.');
     }
   }
+
+
+  async getUserById(id: number): Promise<User | null> {
+    try {
+      const sql = "SELECT * FROM users WHERE id = ?";
+      const params: any[] = [id];
+      const [result]: any = await query(sql, params);
+  
+      if (result && result.length > 0) {
+        const iduser = result[0];
+        return new User(
+          iduser.id,
+          iduser.name,
+          iduser.password,
+          iduser.email,
+          iduser.status,
+        );
+      } else {
+        return null; // No se encontró un libro con el ID especificado
+      }
+    } catch (error) {
+      console.error("Error al obtener el libro por ID:", error);
+      return null;
+    }
+ 
+} 
 
 
 }

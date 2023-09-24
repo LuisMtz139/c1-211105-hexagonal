@@ -9,4 +9,12 @@ export interface UserRepository{
 
     //listar todos los usuarios 
     listAllUsers(): Promise<User[]>;
+
+    //listar por un usuario
+    getUserById(id:number): Promise<User | null>
+
+    //actualizar contraseña
+
+
+
 }
