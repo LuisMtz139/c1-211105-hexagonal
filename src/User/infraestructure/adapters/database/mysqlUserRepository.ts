@@ -193,6 +193,34 @@ async activeUser(id: number): Promise<User | null> {
   }
 }
 
+async listUserInactive(): Promise<User[]> {
+  try {
+    const sql = `
+      SELECT id, name, password, email, status
+      FROM users
+      WHERE status = 'inactive'
+    `;
+    const params: any[] = [];  // No hay parámetros en esta consulta
+    const [rows]: any = await query(sql, params);
+
+    const users: User[] = rows.map((row: any) => {
+      return new User(
+        row.id.toString(),
+        row.name,
+        row.password,
+        row.email,
+        row.status
+      );
+    });
+
+    return users;
+  } catch (error) {
+    console.error('Error al listar usuarios inactivos:', (error as Error).message);
+    throw new Error('Error al listar usuarios inactivos. Consulta los logs para más detalles.');
+  }
+}
+
+
 
 
 

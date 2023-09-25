@@ -13,6 +13,8 @@ import { UpdateUserUseCase } from '../application/updateUserUseCase';
 import { UpdateUserController } from './controllers/updateUserController';
 import { ActiveUserUseCase } from '../application/activeUserUseCase';
 import { ActiveUserController } from './controllers/activeUserController';
+import { ListInactiveUserUseCase } from '../application/listUserInactiveUseCase';
+import { ListInactiveUserController } from './controllers/listInactiveUserController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -25,6 +27,7 @@ export const getUserByIdUseCase = new GetUserByIdUseCase(mysqlUserRepository);
 export const updatePasswordUserUseCase = new UpdatePasswordUserUseCase(mysqlUserRepository);
 export const updateUserUseCase = new UpdateUserUseCase(mysqlUserRepository);
 export const ativeUserUseCase = new ActiveUserUseCase(mysqlUserRepository);
+export const listInactiveUserUseCase = new ListInactiveUserUseCase(mysqlUserRepository);
 
 
 
@@ -42,6 +45,9 @@ export const updatePasswordUserController = new UpdatePasswordUserController(upd
 export const updateUserController = new UpdateUserController(updateUserUseCase)
 
 export const activeUserController = new ActiveUserController(ativeUserUseCase)
+
+export const listInactiveUserController = new ListInactiveUserController(listInactiveUserUseCase)
+
 
 
 

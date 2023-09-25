@@ -22,4 +22,7 @@ export interface UserRepository{
       ): Promise<User | null>;
 
       activeUser(id: number): Promise<User | null>;
+
+      listUserInactive(): Promise<User[] | User | null>;
+    
 }
