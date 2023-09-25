@@ -14,5 +14,8 @@ export interface BookRepository{
 
     updateBook(id:number,is_loaded:boolean ):Promise<Book | null>;
 
+    deleteBook(id:number):Promise<Book | null>;
 
+
+    updateBookss(id: number,title: string, author: string, img_url: string, status: string, is_loaded: boolean): Promise<Book | null>
 }
