@@ -1,8 +1,14 @@
 import * as express from 'express';
-import { createBookController } from '../dependencies';
+import { createBookController, getAllBookController } from '../dependencies';
 
 export const bookRouter = express.Router();
 
 bookRouter.post(
-    "/addBook", createBookController.create.bind(createBookController)
+    "/addBook", 
+    createBookController.create.bind(createBookController)
 );
+
+bookRouter.get(
+    "/getAllBook", 
+    getAllBookController.getAllBook.bind(getAllBookController)
+)

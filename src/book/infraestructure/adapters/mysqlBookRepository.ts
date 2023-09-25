@@ -7,6 +7,7 @@ import { BookRepository } from '../../domain/repositories/bookRepository';
 
 
 export class MysqlBookRepository implements BookRepository{
+    
     async createBook(
         title: string, 
         author: string, 
@@ -45,4 +46,26 @@ export class MysqlBookRepository implements BookRepository{
            return null;
          }
    }
+
+  async getAllBook(): Promise<Book[] | null> {
+    const sql = "SELECT * FROM BOOKS";
+    try {
+        
+        const [result]: any = await query(sql,[]);
+        const  dataBooks = Object.values(JSON.parse(JSON.stringify(result)))
+
+        return (dataBooks).map((book:any)=>
+            new Book(
+                book.id,
+                book.title,
+                book.author,
+                book.img_url,
+                book.status,
+                book.is_loaded                
+            )
+        );
+      } catch (error) {
+        console.error("Error al obtener la lista de libros:", error);
+        return null;
+      }    }
 }
