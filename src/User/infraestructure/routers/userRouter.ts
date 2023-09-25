@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { addUserContoller, deleteUserController, getUserByIdController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
+import { activeUserController, addUserContoller, deleteUserController, getUserByIdController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -36,6 +36,13 @@ userRouter.post(
     '/updateUser/',
     updateUserController.updateUser.bind(updateUserController)
 )
+
+userRouter.post(
+    '/activate',
+    activeUserController.run.bind(activeUserController)
+)
+
+
 
 
 

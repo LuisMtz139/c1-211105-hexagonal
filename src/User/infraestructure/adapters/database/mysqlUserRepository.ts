@@ -170,6 +170,29 @@ async updateUser(
 }
 
 
+async activeUser(id: number): Promise<User | null> {
+  try {
+    const sql = `
+      UPDATE users
+      SET status = 'active'
+      WHERE id = ?
+    `;
+    const params: any[] = [id];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró un usuario con el ID ${id}`);
+    }
+
+    // Obtener y devolver el usuario actualizado
+    const updatedUser = await this.getUserById(id);
+    return updatedUser;
+  } catch (error) {
+    console.error('Error al activar el usuario:', error);
+    throw new Error('Error al activar el usuario. Consulta los logs para más detalles.');
+  }
+}
+
 
 
 

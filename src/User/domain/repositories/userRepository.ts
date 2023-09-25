@@ -20,4 +20,6 @@ export interface UserRepository{
     updateUser(id: number,
         newUser?: { name?: string; password?: string; email?: string; status?: string }
       ): Promise<User | null>;
+
+      activeUser(id: number): Promise<User | null>;
 }
