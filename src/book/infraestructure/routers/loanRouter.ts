@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { createBookController, getAllBookController, getBookByIdController, updateStatusController } from '../dependencies';
+import { createBookController, getAllBookController, getBookByIdController, getBookInactiveController, updateStatusController } from '../dependencies';
 
 export const bookRouter = express.Router();
 
@@ -21,4 +21,9 @@ bookRouter.get(
 bookRouter.put(
     "/actualizar", 
     updateStatusController.updateStatus.bind(updateStatusController)
+)
+
+bookRouter.get(
+    "/getBookInactivate",
+     getBookInactiveController.getBookInactive.bind(getBookInactiveController)
 )

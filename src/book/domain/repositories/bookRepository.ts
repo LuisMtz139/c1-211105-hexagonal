@@ -10,4 +10,8 @@ export interface BookRepository{
     getBookById(id:number):Promise<Book|null>;
     updataStatus(id:number, newStatus: string):Promise<Book | null>;
 
+    getAllBookInactive(status:string):Promise<Book[]|null>;
+
+    
+
 }

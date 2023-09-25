@@ -116,5 +116,33 @@ export class MysqlBookRepository implements BookRepository{
       } catch (error) {
         console.error("Error al actualizar el estado del libro:", error);
         return null; // Puedes manejar el error de alguna manera adecuada
-      }    }
+      }    
+    }
+
+    async getAllBookInactive(status: string): Promise<Book[] | null> {
+        try {
+          const sql = "SELECT * FROM BOOKS WHERE status = ?";
+          const params: any[] = [status];
+      
+          const [result]: any = await query(sql, params);
+      
+          if (result && result.length > 0) {
+            const inactiveBooks = result.map((bookData: any) => new Book(
+              bookData.id,
+              bookData.title,
+              bookData.author,
+              bookData.img_url,
+              bookData.status,
+              bookData.is_loaded
+            ));
+      
+            return inactiveBooks;
+          } else {
+            return [];
+          }
+        } catch (error) {
+          console.error("No se pudo obtener los usuarios inactivos:", error);
+          return null;
+        }
+    }
 }
