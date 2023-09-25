@@ -25,7 +25,7 @@ export class AddUserContoller{
                         email:createUser.email,
                         status:createUser.status,
                     },
-                    message:"El usuario se a creado con exito ha sido creado exitosamente"
+                    message:"Creado"
                 });
             }
             res.status(400).send({
@@ -33,7 +33,7 @@ export class AddUserContoller{
                 data:[],
                 //TODO: implementar validaciones
                 validations:[],
-                message:"Errosr al crear un usuario nuevo, intentalo mas tarde"
+                message:"Error al crear"
             });
 
 

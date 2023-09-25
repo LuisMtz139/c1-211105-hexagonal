@@ -9,7 +9,6 @@ export class DeleteUserUseCase {
             const userDeleted = await this.userRepository.deleteUser(userId);
             return userDeleted;
         } catch (error) {
-            console.error('Error al eliminar user:', error);
             return false;
         }
     }

@@ -34,13 +34,13 @@ export class UpdateUserController {
       } else {
         return res.status(404).json({
           status: "error",
-          message: `No se pudo encontrar un usuario con el ID ${id}`
+          message: `No se pudo encontrar ID ${id}`
         });
       }
     } catch (error) {
       return res.status(500).json({
         status: "error",
-        message: "Error al actualizar el usuario"
+        message: "Error al actualizar"
       });
     }
   }

@@ -39,7 +39,7 @@ export class MysqlUserRepository implements UserRepository {
       return user;
     } catch (error) {
       console.error('Error al agregar un usuario:', error);
-      throw new Error('Error al agregar un usuario. Consulta los logs para más detalles.');
+      throw new Error('Error al agregar un usuario.');
     }
   }
   
@@ -62,7 +62,7 @@ export class MysqlUserRepository implements UserRepository {
       return true;
     } catch (error) {
       console.error('Error al eliminar un usuario:', (error as Error).message);
-      throw new Error('Error al eliminar un usuario. Consulta los logs para más detalles.');
+      throw new Error('Error al eliminar un usuario');
     }
   }
 
@@ -89,7 +89,7 @@ export class MysqlUserRepository implements UserRepository {
       return users;
     } catch (error) {
       console.error('Error al listar usuarios:', (error as Error).message);
-      throw new Error('Error al listar usuarios. Consulta los logs para más detalles.');
+      throw new Error('Error al listar usuarios');
     }
   }
 
@@ -113,7 +113,7 @@ export class MysqlUserRepository implements UserRepository {
         return null; // No se encontró un libro con el ID especificado
       }
     } catch (error) {
-      console.error("Error al obtener el libro por ID:", error);
+      console.error("Error al obtener el usuairo por ID:", error);
       return null;
     }
  
@@ -137,8 +137,8 @@ async updatePassword(id: number, newPassword: string): Promise<User | null> {
     const updatedUser = await this.getUserById(id);
     return updatedUser;
   } catch (error) {
-    console.error('Error al actualizar la contraseña del usuario:', error);
-    throw new Error('Error al actualizar la contraseña del usuario. Consulta los logs para más detalles.');
+    console.error('Error al actualizar ', error);
+    throw new Error('Error al actualizar la contraseña ');
   }
 }
 
@@ -160,15 +160,15 @@ async updateUser(
     const [result]: any = await query(sql, params);
 
     if (!result || result.affectedRows === 0) {
-      throw new Error(`No se encontró un usuario con el ID ${id}`);
+      throw new Error(`No se encontró el ID ${id}`);
     }
 
     // Obtener y devolver el usuario actualizado
     const updatedUser = await this.getUserById(id);
     return updatedUser;
   } catch (error) {
-    console.error('Error al actualizar el usuario:', error);
-    throw new Error('Error al actualizar el usuario. Consulta los logs para más detalles.');
+    console.error('No se puede actualziar', error);
+    throw new Error('No se puede actualizar');
   }
 }
 
@@ -192,7 +192,7 @@ async activeUser(id: number): Promise<User | null> {
     return updatedUser;
   } catch (error) {
     console.error('Error al activar el usuario:', error);
-    throw new Error('Error al activar el usuario. Consulta los logs para más detalles.');
+    throw new Error('Error al activar el usuario');
   }
 }
 
@@ -218,8 +218,8 @@ async listUserInactive(): Promise<User[]> {
 
     return users;
   } catch (error) {
-    console.error('Error al listar usuarios inactivos:', (error as Error).message);
-    throw new Error('Error al listar usuarios inactivos. Consulta los logs para más detalles.');
+    console.error('No se pudo listar usuarios inactivos:', (error as Error).message);
+    throw new Error('No se pudo listar usuarios inactivos:');
   }
 }
 
@@ -230,11 +230,11 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
   const validFilters = ['email', 'name'];
 
   if (!validFilters.includes(filter)) {
-    throw new Error('Invalid filter type');
+    throw new Error('typo invalido');
   }
 
   if ((filter === 'email' && !email) || (filter === 'name' && !name)) {
-    throw new Error(`${filter.charAt(0).toUpperCase() + filter.slice(1)} is required when filter is ${filter}`);
+    throw new Error(`${filter.charAt(0).toUpperCase() + filter.slice(1)} error  ${filter}`);
   }
 
   const sql = `SELECT * FROM users WHERE ${filter} = ?`;
@@ -252,7 +252,7 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
     const users: User[] = rows.map((row: User) => new User(row.id, row.name, row.password, row.email, row.status));  // Asegúrate de que 'status' sea accesible en 'row'
     return users;
   } catch (error) {
-    throw new Error('Error while filtering users. Consulta los logs para más detalles.');
+    throw new Error('Error al obtener');
   }
 }
 

@@ -10,7 +10,6 @@ export class GetUserByIdUseCase{
             const userId = await this.userRepository.getUserById(id);
             return userId;
           } catch (error) {
-            console.error("Error al obtener la lista de libros por usuario:", error);
             return null;
           }
     }

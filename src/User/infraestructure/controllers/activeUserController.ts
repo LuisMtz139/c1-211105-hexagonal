@@ -27,13 +27,13 @@ export class ActiveUserController {
             if (!activeUser) {
                 return res.status(404).send({
                     status: "error",
-                    message: "No se encontro el id."
+                    message: "Id de usuario no encontrado"
                 });
             }
         } catch (error) {   
             return res.status(500).send({
                 status: "error",
-                message: "No se pudo activar"
+                message: "No es posible activar"
             });
         }
     }

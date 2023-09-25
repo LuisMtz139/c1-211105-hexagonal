@@ -6,8 +6,6 @@ import { UserRepository } from '../domain/repositories/userRepository';
 
 export class ListAllUserUseCase{
     constructor(readonly userRepository: UserRepository ){}
-
-
     async getAllUsers(): Promise<User[]> {
         try {
           const users = await this.userRepository.listAllUsers();
