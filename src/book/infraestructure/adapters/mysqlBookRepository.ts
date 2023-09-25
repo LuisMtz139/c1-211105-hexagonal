@@ -7,7 +7,7 @@ import { BookRepository } from '../../domain/repositories/bookRepository';
 
 
 export class MysqlBookRepository implements BookRepository{
-    
+       
     async createBook(
         title: string, 
         author: string, 
@@ -96,4 +96,25 @@ export class MysqlBookRepository implements BookRepository{
         }
      
     }
+
+   async updataStatus(id: number, newStatus: string): Promise<Book | null> {
+    try {
+        const sql = "UPDATE BOOKS SET status = ? WHERE id = ?";
+        const params: any[] = [newStatus, id];
+        
+        // Ejecuta la consulta de actualización en la base de datos
+        const [result]: any = await query(sql, params);
+    
+        if (result && result.affectedRows > 0) {
+          // Si al menos una fila fue afectada por la actualización, significa que se actualizó con éxito
+          // Obtén el libro actualizado de la base de datos
+          const updatedBook = await this.getBookById(id);
+          return updatedBook;
+        } else {
+          return null; // No se encontró un libro con el ID especificado o no se actualizó ningún registro
+        }
+      } catch (error) {
+        console.error("Error al actualizar el estado del libro:", error);
+        return null; // Puedes manejar el error de alguna manera adecuada
+      }    }
 }

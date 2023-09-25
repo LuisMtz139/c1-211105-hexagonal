@@ -8,7 +8,6 @@ export interface BookRepository{
     getAllBook():Promise<Book[] | null>;
 
     getBookById(id:number):Promise<Book|null>;
+    updataStatus(id:number, newStatus: string):Promise<Book | null>;
 
-
-    
 }
