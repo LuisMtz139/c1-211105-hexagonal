@@ -67,5 +67,33 @@ export class MysqlBookRepository implements BookRepository{
       } catch (error) {
         console.error("Error al obtener la lista de libros:", error);
         return null;
-      }    }
+      }    
+    }
+
+
+    async getBookById(id: number): Promise<Book | null> {
+        try {
+          const sql = "SELECT * FROM BOOKS WHERE id = ?";
+          const params: any[] = [id];
+          const [result]: any = await query(sql, params);
+      
+          if (result && result.length > 0) {
+            const bookData = result[0];
+            return new Book(
+              bookData.id,
+              bookData.title,
+              bookData.author,
+              bookData.img_url,
+              bookData.status,
+              bookData.is_loaded
+            );
+          } else {
+            return null; // No se encontró un libro con el ID especificado
+          }
+        } catch (error) {
+          console.error("Error al traer libro:", error);
+          return null;
+        }
+     
+    }
 }

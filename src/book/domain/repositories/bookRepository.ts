@@ -7,5 +7,8 @@ export interface BookRepository{
 
     getAllBook():Promise<Book[] | null>;
 
+    getBookById(id:number):Promise<Book|null>;
 
+
+    
 }
