@@ -15,6 +15,8 @@ import { ActiveUserUseCase } from '../application/activeUserUseCase';
 import { ActiveUserController } from './controllers/activeUserController';
 import { ListInactiveUserUseCase } from '../application/listUserInactiveUseCase';
 import { ListInactiveUserController } from './controllers/listInactiveUserController';
+import { FilterUserUseCase } from '../application/filterUserUseCase';
+import { FilterUserController } from './controllers/filterUserController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -28,6 +30,7 @@ export const updatePasswordUserUseCase = new UpdatePasswordUserUseCase(mysqlUser
 export const updateUserUseCase = new UpdateUserUseCase(mysqlUserRepository);
 export const ativeUserUseCase = new ActiveUserUseCase(mysqlUserRepository);
 export const listInactiveUserUseCase = new ListInactiveUserUseCase(mysqlUserRepository);
+export const filterUserUseCase = new FilterUserUseCase(mysqlUserRepository);
 
 
 
@@ -47,6 +50,8 @@ export const updateUserController = new UpdateUserController(updateUserUseCase)
 export const activeUserController = new ActiveUserController(ativeUserUseCase)
 
 export const listInactiveUserController = new ListInactiveUserController(listInactiveUserUseCase)
+
+export const filterUserController = new FilterUserController(filterUserUseCase)
 
 
 

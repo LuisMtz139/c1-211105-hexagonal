@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { activeUserController, addUserContoller, deleteUserController, getUserByIdController, listInactiveUserController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
+import { activeUserController, addUserContoller, deleteUserController, filterUserController, getUserByIdController, listInactiveUserController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -49,6 +49,14 @@ userRouter.get(
     '/inactive',
     listInactiveUserController.run.bind(listInactiveUserController)    
 )
+//filtrar datos del usuario por name o email
+userRouter.get(
+    '/filter',
+    filterUserController.run.bind(filterUserController)
+  );
+  
+
+
 
 
 

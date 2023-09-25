@@ -4,7 +4,10 @@ import { User } from "../../../domain/entities/user";
 import { UserRepository } from "../../../domain/repositories/userRepository";
 
 
-
+interface FilterOptions {
+  email?: string;
+  name?: string;
+}
 
 
 export class MysqlUserRepository implements UserRepository {
@@ -220,8 +223,37 @@ async listUserInactive(): Promise<User[]> {
   }
 }
 
+//obtener usuarios ya sea por name o email
 
+// Obtener usuarios ya sea por name o email
+async filterUser(filter: string, email?: string, name?: string): Promise<User[]> {
+  const validFilters = ['email', 'name'];
 
+  if (!validFilters.includes(filter)) {
+    throw new Error('Invalid filter type');
+  }
 
+  if ((filter === 'email' && !email) || (filter === 'name' && !name)) {
+    throw new Error(`${filter.charAt(0).toUpperCase() + filter.slice(1)} is required when filter is ${filter}`);
+  }
+
+  const sql = `SELECT * FROM users WHERE ${filter} = ?`;
+  const value = filter === 'email' ? email : name;
+
+  try {
+    const [rows]: any = await query(sql, [value]);
+
+    // Si no hay resultados, devolver un array vacío
+    if (!rows || rows.length === 0) {
+      return [];
+    }
+
+    // Mapear los resultados a objetos User
+    const users: User[] = rows.map((row: User) => new User(row.id, row.name, row.password, row.email, row.status));  // Asegúrate de que 'status' sea accesible en 'row'
+    return users;
+  } catch (error) {
+    throw new Error('Error while filtering users. Consulta los logs para más detalles.');
+  }
+}
 
 }
