@@ -145,4 +145,26 @@ export class MysqlBookRepository implements BookRepository{
           return null;
         }
     }
+
+
+    async updateBook(id: number, is_loaded: boolean): Promise<Book | null> {
+        try {
+          const sql = "UPDATE BOOKS SET is_loaded = ? WHERE id = ?";
+          const params: any[] = [is_loaded, id];
+      
+          
+          const [result]: any = await query(sql, params);
+      
+          if (result && result.affectedRows > 0) {
+           
+            const updatedBook = await this.getBookById(id);
+            return updatedBook;
+          } else {
+            return null; // No se encontró un libro con el ID especificado o no se actualizó ningún registro
+          }
+        } catch (error) {
+          console.error("Error al actualizar el campo 'is_loaded' del libro:", error);
+          return null; 
+        }
+    }
 }

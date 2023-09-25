@@ -12,6 +12,7 @@ export interface BookRepository{
 
     getAllBookInactive(status:string):Promise<Book[]|null>;
 
-    
+    updateBook(id:number,is_loaded:boolean ):Promise<Book | null>;
+
 
 }
