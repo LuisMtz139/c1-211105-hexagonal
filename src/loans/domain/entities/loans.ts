@@ -1,8 +1,10 @@
-export class Loans{
+export class Loan {
     constructor(
-        id: number,
-        prestamo: Date,
-        entrega: Date,
-        estado: string,
-    ){}
+        readonly id: number,
+        readonly prestamo: string,
+        readonly entrega: string,
+        readonly estado: string,
+        readonly id_Book: number,
+        readonly id_User: number
+    ) {}
 }
