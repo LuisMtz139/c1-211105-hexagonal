@@ -1,8 +1,8 @@
 import { Loan } from "../domain/entities/loans";
-import { LoansRepository } from "../domain/repositories/loansRepository";
+import { LoanRepository } from "../domain/repositories/loansRepository";
 
 export class CreateLonUseCase{
-    constructor(readonly loansRepository: LoansRepository ){}
+    constructor(readonly loansRepository: LoanRepository ){}
     
     async run( id_Book:Number,id_User: Number, prestamo:String,entrega:String,estado:String ):Promise<Loan | null>{
         try {
