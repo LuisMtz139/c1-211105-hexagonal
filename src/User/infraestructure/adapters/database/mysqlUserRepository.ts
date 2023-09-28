@@ -11,7 +11,6 @@ interface FilterOptions {
 
 
 export class MysqlUserRepository implements UserRepository {
-
   //Agregar
   async addUser(name: string, password: string, email: string, status: string): Promise<User> {
     try {
@@ -177,7 +176,7 @@ async activeUser(id: number): Promise<User | null> {
   try {
     const sql = `
       UPDATE users
-      SET status = 'active'
+      SET status = 'inactive'
       WHERE id = ?
     `;
     const params: any[] = [id];
@@ -255,5 +254,32 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
     throw new Error('Error al obtener');
   }
 }
+
+async eliminarReseña(userId: number, reviewId: string): Promise<boolean> {
+  const sql = `
+    DELETE FROM reviews
+    WHERE userId = ? AND reviewId = ?
+  `;
+  const params: any[] = [userId, reviewId];
+
+  return new Promise((resolve, reject) => {
+    query(sql, params)
+      .then(([result]: any) => {
+        if (result && result.affectedRows > 0) {
+          console.log(`Reseña con ID ${reviewId} eliminada para el usuario con ID ${userId}.`);
+          resolve(true);
+        } else {
+          console.log(`No se encontró una reseña con ID ${reviewId} para el usuario con ID ${userId}.`);
+          resolve(false);
+        }
+      })
+      .catch((error: any) => {
+        console.error('Error al eliminar la reseña:', error);
+        reject(false);
+      });
+  });
+}
+
+
 
 }

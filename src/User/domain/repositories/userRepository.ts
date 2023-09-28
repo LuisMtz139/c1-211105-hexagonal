@@ -26,4 +26,12 @@ export interface UserRepository{
     listUserInactive(): Promise<User[] | User | null>;
     
     //filtrar datos por email o name
-    filterUser( filter: string, email?: string, name?: string ): Promise<User | User[] | null>}
+    filterUser( filter: string, email?: string, name?: string ): Promise<User | User[] | null>
+    
+    //eliminar reseña(unicamente el usuario que agrego que agrego la reseña)
+    eliminarReseña(userId: number, reviewId: String): Promise<boolean>;
+
+
+
+}
+    

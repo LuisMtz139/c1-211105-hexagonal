@@ -29,12 +29,12 @@ userRouter.get(
      getUserByIdController.getUserId.bind(getUserByIdController)
 )
 //actualizar contraseña
-userRouter.post(
+userRouter.put(
     '/updatePassword/',
     updatePasswordUserController.updatePassword.bind(updatePasswordUserController)
 )
 //actualizar datos del usuario
-userRouter.post(
+userRouter.put(
     '/updateUser/',
     updateUserController.updateUser.bind(updateUserController)
 )
@@ -55,12 +55,3 @@ userRouter.get(
     filterUserController.run.bind(filterUserController)
   );
   
-
-
-
-
-
-
-
-
-
