@@ -7,6 +7,12 @@ export interface LoanRepository{
     deleteLoan(loanId:String): Promise<boolean>;
 
     //listar todos los usuarios
-
     getAllLoan(): Promise<Loan[]>;
+
+    //obtener un loan por id
+    getLoanById(id:number):Promise<Loan | null>
+
+    //actualizar Lona
+    updateLoan(id: number,newUser?: { prestamo?: string; entrega?: string; estado?: string }): Promise<Loan | null>;
+
 }

@@ -94,6 +94,57 @@ async getAllLoan(): Promise<Loan[]> {
     throw new Error('Error al listar los prestamos');
   }
 }
+async getLoanById(id: number): Promise<Loan | null> {
+  try {
+    const sql = "SELECT * FROM prestamos WHERE id = ?";
+    const params: any[] = [id];
+    const [result]: any = await query(sql, params);
+
+    if (result && result.length > 0) {
+      const idLoan = result[0];
+      return new Loan(
+        idLoan.id,
+        idLoan.prestamo,
+        idLoan.entrega,
+        idLoan.estado,
+        idLoan.id_Book,
+        idLoan.id_User
+      );
+    } else {
+      return null; // No se encontró un libro con el ID especificado
+    }
+  } catch (error) {
+    console.error("Error al obtener el usuairo por ID:", error);
+    return null;
+  }
+
+}
+
+async updateLoan(id: number, newUser?: { prestamo?: string; entrega?: string; estado?: string;  }): Promise<Loan | null> {
+  try {
+    const { prestamo, entrega, estado } = newUser || {};
+
+    const sql = `
+      UPDATE prestamos
+      SET prestamo = ?, entrega = ?, estado = ?
+      WHERE id = ?
+    `;
+
+    const params: any[] = [prestamo, entrega, estado, id];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró el ID ${id}`);
+    }
+
+    // Obtener y devolver el usuario actualizado
+    const updateLoan = await this.getLoanById(id)
+    return updateLoan;
+  } catch (error) {
+    console.error('No se puede actualiar el Loan', error);
+    throw new Error('No se puede actualizar');
+  }
+}
 
       
 }
