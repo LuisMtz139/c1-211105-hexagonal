@@ -94,9 +94,11 @@ async getAllLoan(): Promise<Loan[]> {
     throw new Error('Error al listar los prestamos');
   }
 }
-async getLoanById(id: number): Promise<Loan | null> {
+
+
+async  getLoanById(id: number): Promise<Loan | null> {
   try {
-    const sql = "SELECT * FROM prestamos WHERE id = ?";
+    const sql = "SELECT * FROM prestamos WHERE id_User = ?";
     const params: any[] = [id];
     const [result]: any = await query(sql, params);
 
@@ -111,14 +113,15 @@ async getLoanById(id: number): Promise<Loan | null> {
         idLoan.id_User
       );
     } else {
-      return null; // No se encontró un libro con el ID especificado
+      return null; // No se encontró un préstamo con el ID especificado
     }
   } catch (error) {
-    console.error("Error al obtener el usuairo por ID:", error);
+    console.error("Error al obtener el préstamo por ID:", error);
     return null;
   }
-
+  
 }
+
 
 async updateLoan(id: number, newUser?: { prestamo?: string; entrega?: string; estado?: string;  }): Promise<Loan | null> {
   try {
