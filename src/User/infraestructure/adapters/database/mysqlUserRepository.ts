@@ -286,31 +286,42 @@ async eliminarReseña(userId: number, reviewId: string): Promise<boolean> {
 //quiero iniciar sesion por medio el email y es password, quiero que me hagas una sentencia para poder validar si estos campos existen en la base de datos
 async iniciarSesion(email: string, password: string): Promise<User | null> {
   try {
-    const sql = `
+    const sqlSelect = `
       SELECT id, name, password, email, status
       FROM users
       WHERE email = ? AND password = ?
     `;
-    const params: any[] = [email, password];
-    const [rows]: any = await query(sql, params);
+    const paramsSelect: any[] = [email, password];
+    const [rows]: any = await query(sqlSelect, paramsSelect);
 
     // Si no se encuentra un usuario con el email y contraseña proporcionados
     if (!rows || rows.length === 0) {
       return null;
     }
 
-    // Devolver el usuario encontrado
+    const userId = rows[0].id.toString();
+
+    // Actualizar el status a true
+    const sqlUpdateStatus = `
+      UPDATE users
+      SET status = ?
+      WHERE id = ?
+    `;
+    const paramsUpdateStatus: any[] = [true, userId];
+    await query(sqlUpdateStatus, paramsUpdateStatus);
+
+    // Devolver el usuario encontrado con el status actualizado
     const user = new User(
-      rows[0].id.toString(),
+      userId,
       rows[0].name,
       rows[0].password,
       rows[0].email,
-      rows[0].status
+      true
     );
 
     // Generar el token y asignarlo al usuario
-    const token = generateToken(user.id);
-    user.token = token; // Asignar el token al usuario
+    const token = generateToken(userId);
+    user.token = token;
 
     return user;
   } catch (error) {
@@ -318,6 +329,7 @@ async iniciarSesion(email: string, password: string): Promise<User | null> {
     throw new Error('Error al iniciar sesión');
   }
 }
+
 
 
 }
