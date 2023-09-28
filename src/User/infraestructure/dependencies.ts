@@ -19,6 +19,8 @@ import { FilterUserUseCase } from '../application/filterUserUseCase';
 import { FilterUserController } from './controllers/filterUserController';
 import { IniciarSesionUseCase } from '../application/iniciarSesionUseCase';
 import { IniciarSesionUserController } from './controllers/iniciarSesionUserController';
+import { CerarSesionUseCase } from '../application/cerrarSesionUseCase';
+import { CerrarSesionController } from './controllers/cerrarSesionController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -34,29 +36,22 @@ export const ativeUserUseCase = new ActiveUserUseCase(mysqlUserRepository);
 export const listInactiveUserUseCase = new ListInactiveUserUseCase(mysqlUserRepository);
 export const filterUserUseCase = new FilterUserUseCase(mysqlUserRepository);
 export const iniciarSesionUseCase = new IniciarSesionUseCase(mysqlUserRepository);
+export const cerarSesionUseCase = new CerarSesionUseCase(mysqlUserRepository);
 
 
 
 
 export const usersContoller = new UsersContoller(listAllUserUseCase);
-
 export const addUserContoller = new AddUserContoller(addUserUseCase)
-
 export const deleteUserController = new DeleteUserController(deleteUserUseCase)
-
 export const getUserByIdController = new GetUserByIdController(getUserByIdUseCase)
-
 export const updatePasswordUserController = new UpdatePasswordUserController(updatePasswordUserUseCase)
-
 export const updateUserController = new UpdateUserController(updateUserUseCase)
-
 export const activeUserController = new ActiveUserController(ativeUserUseCase)
-
 export const listInactiveUserController = new ListInactiveUserController(listInactiveUserUseCase)
-
 export const filterUserController = new FilterUserController(filterUserUseCase)
-
 export const iniciarSesionUserController = new IniciarSesionUserController(iniciarSesionUseCase)
+export const cerrarSesionController = new CerrarSesionController(cerarSesionUseCase)
 
 
 

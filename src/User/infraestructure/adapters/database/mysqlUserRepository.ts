@@ -177,7 +177,7 @@ async activeUser(id: number): Promise<User | null> {
   try {
     const sql = `
       UPDATE users
-      SET status = true
+      SET status = false
       WHERE id = ?
     `;
     const params: any[] = [id];
@@ -201,7 +201,7 @@ async listUserInactive(): Promise<User[]> {
     const sql = `
       SELECT id, name, password, email, status
       FROM users
-      WHERE status = 'inactive'
+      WHERE status = true
     `;
     const params: any[] = [];  // No hay parámetros en esta consulta
     const [rows]: any = await query(sql, params);
@@ -329,6 +329,29 @@ async iniciarSesion(email: string, password: string): Promise<User | null> {
     throw new Error('Error al iniciar sesión');
   }
 }
+
+//cerarSesion 
+async cerrarSesion(id: number): Promise<User | null> {
+  try {
+    const sql = `
+      UPDATE users
+      SET status = false
+      WHERE id = ?
+    `;
+    const params: any[] = [id];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró un usuario con el ID ${id}`);
+    }
+
+    // Obtener y devolver el usuario actualizado
+    const updatedUser = await this.getUserById(id);
+    return updatedUser;
+  } catch (error) {
+    console.error('Errro al cerar sesion:', error);
+    throw new Error('Error al cerrar sesion');
+  }}
 
 
 

@@ -35,7 +35,7 @@ export interface UserRepository{
     iniciarSesion(email: string, password: string): Promise<User | null>;
 
     //cerrar sesion
-
+    cerrarSesion(id:number):Promise<User | null>;
 
 }
     
