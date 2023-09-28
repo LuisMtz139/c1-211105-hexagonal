@@ -11,8 +11,9 @@ interface FilterOptions {
 
 
 export class MysqlUserRepository implements UserRepository {
+
   //Agregar
-  async addUser(name: string, password: string, email: string, status: string): Promise<User> {
+  async addUser(name: string, password: string, email: string, status: boolean): Promise<User> {
     try {
       const sql = `
         INSERT INTO users (name, password, email, status)
@@ -176,7 +177,7 @@ async activeUser(id: number): Promise<User | null> {
   try {
     const sql = `
       UPDATE users
-      SET status = 'inactive'
+      SET status = true
       WHERE id = ?
     `;
     const params: any[] = [id];
@@ -254,7 +255,7 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
     throw new Error('Error al obtener');
   }
 }
-
+//eliminar reseña no terminada
 async eliminarReseña(userId: number, reviewId: string): Promise<boolean> {
   const sql = `
     DELETE FROM reviews
@@ -281,5 +282,46 @@ async eliminarReseña(userId: number, reviewId: string): Promise<boolean> {
 }
 
 
+//iniciarSesion 
+//quiero iniciar sesion por medio el email y es password, quiero que me hagas una sentencia para poder validar si estos campos existen en la base de datos
+async iniciarSesion(email: string, password: string): Promise<User | null> {
+  try {
+    const sql = `
+      SELECT id, name, password, email, status
+      FROM users
+      WHERE email = ? AND password = ?
+    `;
+    const params: any[] = [email, password];
+    const [rows]: any = await query(sql, params);
+
+    // Si no se encuentra un usuario con el email y contraseña proporcionados
+    if (!rows || rows.length === 0) {
+      return null;
+    }
+
+    // Devolver el usuario encontrado
+    const user = new User(
+      rows[0].id.toString(),
+      rows[0].name,
+      rows[0].password,
+      rows[0].email,
+      rows[0].status
+    );
+
+    // Generar el token y asignarlo al usuario
+    const token = generateToken(user.id);
+    user.token = token; // Asignar el token al usuario
+
+    return user;
+  } catch (error) {
+    console.error('Error al iniciar sesión:', error);
+    throw new Error('Error al iniciar sesión');
+  }
+}
+
 
 }
+
+
+
+

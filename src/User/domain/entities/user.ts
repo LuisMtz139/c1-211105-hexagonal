@@ -5,6 +5,6 @@ export class User{
         readonly name:string,
         readonly password:String,
         readonly email:String,
-        readonly status: String,
+        readonly status: boolean,
     ){}
 }

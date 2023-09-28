@@ -12,7 +12,7 @@ export class AddUserUseCase{
         name:String,
         password:String,
         email:String,
-        status:string
+        status:boolean
     ):Promise<User |null >{
         try{
             const createUser = await this.userRepository.addUser(name, password,email,status);

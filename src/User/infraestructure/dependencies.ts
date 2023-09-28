@@ -17,6 +17,8 @@ import { ListInactiveUserUseCase } from '../application/listUserInactiveUseCase'
 import { ListInactiveUserController } from './controllers/listInactiveUserController';
 import { FilterUserUseCase } from '../application/filterUserUseCase';
 import { FilterUserController } from './controllers/filterUserController';
+import { IniciarSesionUseCase } from '../application/iniciarSesionUseCase';
+import { IniciarSesionUserController } from './controllers/iniciarSesionUserController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -31,6 +33,7 @@ export const updateUserUseCase = new UpdateUserUseCase(mysqlUserRepository);
 export const ativeUserUseCase = new ActiveUserUseCase(mysqlUserRepository);
 export const listInactiveUserUseCase = new ListInactiveUserUseCase(mysqlUserRepository);
 export const filterUserUseCase = new FilterUserUseCase(mysqlUserRepository);
+export const iniciarSesionUseCase = new IniciarSesionUseCase(mysqlUserRepository);
 
 
 
@@ -52,6 +55,8 @@ export const activeUserController = new ActiveUserController(ativeUserUseCase)
 export const listInactiveUserController = new ListInactiveUserController(listInactiveUserUseCase)
 
 export const filterUserController = new FilterUserController(filterUserUseCase)
+
+export const iniciarSesionUserController = new IniciarSesionUserController(iniciarSesionUseCase)
 
 
 
