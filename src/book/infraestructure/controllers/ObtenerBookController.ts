@@ -1,32 +1,32 @@
 import { Response,Request } from "express";
-import { GetAllBookUseCase } from "../../application/getAllBookUseCase";
+import { ObtenerBookUseCase } from "../../application/obtenerBookUseCase";
 
 
-export class GetAllBookController {
+export class ObtenerBookController {
     
-    constructor (readonly getAllBookUseCase : GetAllBookUseCase){}
+    constructor (readonly obtenerBookUseCase : ObtenerBookUseCase){}
 
-    async getAllBook(req:Request, res:Response){
+    async obetenreBook(req:Request, res:Response){
         try {
-            const books = await this.getAllBookUseCase.getAllBook();
+            const books = await this.obtenerBookUseCase.obtenerBook();
             if (books) {
               return res.status(200).json({
                 status: "success",
                 data: books,
-                message: "Lista de libros obtenida exitosamente",
+                message: "se obtuvieron todos los books",
               });
             } else {
               return res.status(404).json({
                 status: "error",
                 data: [],
-                message: "No se encontraron libros",
+                message: "No se encontraron",
               });
             }
           } catch (error) {
             return res.status(500).json({
               status: "error",
               data: [],
-              message: "Error al obtener la lista de libros",
+              message: "Error al obtener book",
             });
           }
         }

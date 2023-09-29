@@ -1,20 +1,17 @@
-import { CreateBookUserCase } from "../application/createBookUseCase";
-import { DeleteBookUseCase } from "../application/deleteBookUseCase";
-import { GetBookAllInactiveUseCase } from "../application/getAllBookInactiveUseCase";
-import { GetAllBookUseCase } from "../application/getAllBookUseCase";
-import { GetBookByIdUseCase } from "../application/getBookByIdUseCase";
-import { UpdateBokUseCase } from "../application/updateBoksUserCase";
-import { UpdateBookUseCase } from "../application/updateBookUseCase";
+import { AgregarBookUseCase } from "../application/agregarBookUseCase";
+import { GetBookInactiveUseCase } from "../application/getInactiveBookUseCase";
+import { ObtenerBookByIdUseCase } from "../application/obtenerBookByIdUseCase";
+import { ObtenerBookUseCase } from "../application/obtenerBookUseCase";
+import { PrestarBookUseCase } from "../application/prestarBookUseCase";
 import { UpdateStatusUseCase } from "../application/updateStatusBookUseCase";
 import { MysqlBookRepository } from "./adapters/mysqlBookRepository";
-import { CreateBookController } from "./controllers/createBookController";
-import { DeleteBooController } from "./controllers/deleteBookController";
-import { GetAllBookController } from "./controllers/getAllBookController";
-import { GetBookInactiveController } from "./controllers/getAllBookInactiveController";
-import { GetBookByIdController } from "./controllers/getBookByIdController";
-import { UpdateBooController } from "./controllers/updateBooController";
-import { UpdateBookController } from "./controllers/updateBookController";
-import { UpdateStatusController } from "./controllers/updateBookStatusController";
+import { ObtenerBookController } from "./controllers/ObtenerBookController";
+import { AgregarBookController } from "./controllers/agregarBookController";
+import { GetInactiveBookController } from "./controllers/getInactiveBookController";
+import { ObtenerBookByIdController } from "./controllers/obtenerBookByIdController";
+import { PrestarBookController } from "./controllers/prestarBookController";
+import { UpdateStatusController } from "./controllers/updateStatusBookController";
+
 
 
 export const mysqlBookRepository = new MysqlBookRepository();
@@ -27,28 +24,25 @@ export const mysqlBookRepository = new MysqlBookRepository();
 
 
 
-export const createBookUserCase = new CreateBookUserCase(mysqlBookRepository);
-export const getAllBookUseCase = new GetAllBookUseCase(mysqlBookRepository);
-export const getBookByIdUseCase = new GetBookByIdUseCase(mysqlBookRepository);
+export const agregarBookUseCase = new AgregarBookUseCase(mysqlBookRepository);
+export const obtenerBookUseCase = new ObtenerBookUseCase(mysqlBookRepository);
+export const obtenerBookByIdUseCase = new ObtenerBookByIdUseCase(mysqlBookRepository);
 export const updateStatusUseCase = new UpdateStatusUseCase(mysqlBookRepository);
-export const getBookAllInactiveUseCase = new GetBookAllInactiveUseCase(mysqlBookRepository);
-export const updateBookUseCase = new UpdateBookUseCase(mysqlBookRepository);
-export const deleteBookUseCase = new DeleteBookUseCase(mysqlBookRepository);
-export const updateBokUseCase = new UpdateBokUseCase(mysqlBookRepository);
+export const getBookInactiveUseCase = new GetBookInactiveUseCase(mysqlBookRepository);
+export const prestarBookUseCase = new PrestarBookUseCase(mysqlBookRepository);
 
 
 
 
 
 
-export const createBookController = new CreateBookController(createBookUserCase);
-export const getAllBookController = new GetAllBookController(getAllBookUseCase);
-export const getBookByIdController = new GetBookByIdController(getBookByIdUseCase);
+
+export const agregarBookController = new AgregarBookController(agregarBookUseCase);
+export const obtenerBookController = new ObtenerBookController(obtenerBookUseCase);
+export const obtenerBookByIdController = new ObtenerBookByIdController(obtenerBookByIdUseCase);
 export const updateStatusController = new UpdateStatusController(updateStatusUseCase);
-export const getBookInactiveController = new GetBookInactiveController(getBookAllInactiveUseCase);
-export const updateBookController = new UpdateBookController(updateBookUseCase);
-export const deleteBookController = new DeleteBooController(deleteBookUseCase);
-export const updateBooController = new UpdateBooController(updateBokUseCase);
+export const getInactiveBookController = new GetInactiveBookController(getBookInactiveUseCase);
+export const prestarBookController = new PrestarBookController(prestarBookUseCase);
 
 
 

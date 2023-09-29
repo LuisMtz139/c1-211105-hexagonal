@@ -1,27 +1,42 @@
 import { Book } from "../domain/entities/book";
 import { BookRepository } from "../domain/repositories/bookRepository";
+import { validate } from "class-validator";
+import { ValidationIdBook } from "../domain/validation/validationBook";
 
 
-export class UpdateStatusUseCase{
-    constructor(readonly bookRepository: BookRepository){}
-
-    async updateStatus(id: number, newStatus: string): Promise<Book | null> {
-        try {
-          // Obtén el libro que deseas actualizar
-          const bookToUpdate = await this.bookRepository.getBookById(id)
-    
-          if (!bookToUpdate) {
-            return null; 
-          }
-          
-          const updatedBook = new Book(bookToUpdate.id,bookToUpdate.title,bookToUpdate.author,bookToUpdate.img_url, newStatus,  bookToUpdate.is_loaded);
-    
-          await this.bookRepository.updataStatus(id, newStatus);
-    
-          return updatedBook;
-        } catch (error) {
-          console.error('Error al actualizar el estado del libro:', error);
-          return null; // Puedes manejar el error de alguna manera adecuada
-        }
+export class UpdateStatusUseCase {
+    constructor(readonly bookRepository: BookRepository) {}
+  
+    async updateStatus(id: number): Promise<{ book: Book | null; message?: string }> {
+      // Validar el ID antes de continuar
+      const validationErrors = await validate(new ValidationIdBook(id));
+  
+      if (validationErrors.length > 0) {
+        throw new Error("ID inválido. Debe ser un número.");
       }
-}
+  
+      // Obtén el libro que deseas actualizar
+      const updateStatus = await this.bookRepository.obtenerBookById(id);
+  
+      if (!updateStatus) {
+        return { book: null };
+      }
+  
+      if (!updateStatus.status) {
+        return { book: updateStatus, message: 'El campo "status" ya estaba en false.' };
+      }
+  
+      let valitationPost = new ValidationIdBook(id);
+          const validation = await validate(valitationPost)
+          if (validation.length > 0) {
+              throw new Error(JSON.stringify(validation));
+      }
+  
+      const statusUpdate = await this.bookRepository.updataStatus(id);
+  
+      if (!statusUpdate) {
+        return { book: null }; // Error al actualizar la revisión
+      }
+      return { book: statusUpdate };
+    }
+  }

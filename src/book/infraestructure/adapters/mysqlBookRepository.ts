@@ -7,228 +7,118 @@ import { BookRepository } from '../../domain/repositories/bookRepository';
 
 
 export class MysqlBookRepository implements BookRepository{
-   
-       
-    async createBook(
-        title: string, 
-        author: string, 
-        img_url: string, 
-        status: string, 
-        is_loaded: boolean
-        ): Promise<Book|null> {
-       try {
-           const sql = "INSERT INTO BOOKS (title,author,img_url,status,is_loaded) VALUES(?,?,?,?,?)";
-           const params: any[] = [title,author,img_url,status,is_loaded];
-           const [result]:any = await query(sql,params);
-           return new Book(result.id,title,author,img_url,status,is_loaded);
-       } catch (error) {
-           return null;
-       }
+
+  async agregarBook(title: string, author: string, img_url: string, status: boolean, is_loaded: boolean): Promise<Book|null> {
+   try {
+       const sql = "INSERT INTO BOOKS (title,author,img_url,status,is_loaded) VALUES(?,?,?,?,?)";
+       const params: any[] = [title,author,img_url,status,is_loaded];
+       const [result]:any = await query(sql,params);
+       return new Book(result.id,title,author,img_url,status,is_loaded);
+   } catch (error) {
+       return null;
    }
-   async getAll():Promise<Book[]|null>{
-       const sql = "SELECT * FROM BOOKS";
-       try {
-           
-           const [result]: any = await query(sql,[]);
-           const  dataBooks = Object.values(JSON.parse(JSON.stringify(result)))
+}
 
-           return (dataBooks).map((book:any)=>
-               new Book(
-                   book.id,
-                   book.title,
-                   book.author,
-                   book.img_url,
-                   book.status,
-                   book.is_loaded                
-               )
-           );
-         } catch (error) {
-           console.error("Error al obtener la lista de libros:", error);
-           return null;
-         }
-   }
+async obetenerBook():Promise<Book[]|null>{
+  const sql = "SELECT * FROM BOOKS";
+  try { 
+      const [result]: any = await query(sql,[]);
+      const  dataBooks = Object.values(JSON.parse(JSON.stringify(result)))
 
-  async getAllBook(): Promise<Book[] | null> {
-    const sql = "SELECT * FROM BOOKS";
-    try {
-        
-        const [result]: any = await query(sql,[]);
-        const  dataBooks = Object.values(JSON.parse(JSON.stringify(result)))
-
-        return (dataBooks).map((book:any)=>
-            new Book(
-                book.id,
-                book.title,
-                book.author,
-                book.img_url,
-                book.status,
-                book.is_loaded                
-            )
-        );
-      } catch (error) {
-        console.error("Error al obtener la lista de libros:", error);
-        return null;
-      }    
+      return (dataBooks).map((book:any)=>new Book(book.id, book.title,book.author,book.img_url,book.status, book.is_loaded));
+    } catch (error) {
+      console.error("No se peude obetener los libros:", error);
+      return null;
     }
+}
 
+async obtenerBookById(id: number): Promise<Book | null> {
+  try {
+    const sql = "SELECT * FROM BOOKS WHERE id = ?";
+    const params: any[] = [id];
+    const [result]: any = await query(sql, params);
 
-    async getBookById(id: number): Promise<Book | null> {
-        try {
-          const sql = "SELECT * FROM BOOKS WHERE id = ?";
-          const params: any[] = [id];
-          const [result]: any = await query(sql, params);
-      
-          if (result && result.length > 0) {
-            const bookData = result[0];
-            return new Book(
-              bookData.id,
-              bookData.title,
-              bookData.author,
-              bookData.img_url,
-              bookData.status,
-              bookData.is_loaded
-            );
-          } else {
-            return null; // No se encontró un libro con el ID especificado
-          }
-        } catch (error) {
-          console.error("Error al traer libro:", error);
-          return null;
-        }
-     
+    if (result && result.length > 0) {
+      const bookData = result[0];
+      return new Book( bookData.id,bookData.title,bookData.author,bookData.img_url,bookData.status,bookData.is_loaded);
+    } else {
+      return null; // No se encontró un libro con el ID especificado
     }
+  } catch (error) {
+    console.error("Error al obtener el libro por ID:", error);
+    return null;
+  }
+}
 
-   async updataStatus(id: number, newStatus: string): Promise<Book | null> {
-    try {
-        const sql = "UPDATE BOOKS SET status = ? WHERE id = ?";
-        const params: any[] = [newStatus, id];
-        
-        // Ejecuta la consulta de actualización en la base de datos
-        const [result]: any = await query(sql, params);
+async updataStatus(id: number): Promise<Book | null> {
+  try {
+    const existingBook = await this.obtenerBookById(id)
+    if (!existingBook) {
+      return null; // No se encontró una revisión con el ID especificado
+    }
+    const updateBookInactive = new Book(
+      existingBook.id,
+      existingBook.title,
+      existingBook.author,
+      existingBook.img_url,
+      false,
+      existingBook.is_loaded
+    );
+
+    const sql = "UPDATE BOOKS SET status = ? WHERE id = ?";
+    const params:any[] = [updateBookInactive.status,updateBookInactive.id];
+    await query(sql,params);
+
+    return updateBookInactive;
     
-        if (result && result.affectedRows > 0) {
-          // Si al menos una fila fue afectada por la actualización, significa que se actualizó con éxito
-          // Obtén el libro actualizado de la base de datos
-          const updatedBook = await this.getBookById(id);
-          return updatedBook;
-        } else {
-          return null; // No se encontró un libro con el ID especificado o no se actualizó ningún registro
-        }
-      } catch (error) {
-        console.error("Error al actualizar el estado del libro:", error);
-        return null; // Puedes manejar el error de alguna manera adecuada
-      }    
+  } catch (error) {
+    console.error("Error al actualizar el estado del libro:", error);
+    return null; // Puedes manejar el error de alguna manera adecuada
+  }
+}
+
+async getInactiveBook(status: boolean): Promise<Book[] | null> {
+  try {
+    const sql = "SELECT * FROM BOOKS WHERE status = ?";
+    const params: any[] = [status];
+
+    const [result]: any = await query(sql, params);
+
+    if (result && result.length > 0) {
+      const inactiveBooks = result.map((bookData: any) => new Book(bookData.id,bookData.title,bookData.author,bookData.img_url,bookData.status,bookData.is_loaded));
+      return inactiveBooks;
+    } else {
+      return [];
     }
+  } catch (error) {
+    console.error("Error al obtener los books inactives:", error);
+    return null;
+  }
+}
 
-    async getAllBookInactive(status: string): Promise<Book[] | null> {
-        try {
-          const sql = "SELECT * FROM BOOKS WHERE status = ?";
-          const params: any[] = [status];
-      
-          const [result]: any = await query(sql, params);
-      
-          if (result && result.length > 0) {
-            const inactiveBooks = result.map((bookData: any) => new Book(
-              bookData.id,
-              bookData.title,
-              bookData.author,
-              bookData.img_url,
-              bookData.status,
-              bookData.is_loaded
-            ));
-      
-            return inactiveBooks;
-          } else {
-            return [];
-          }
-        } catch (error) {
-          console.error("No se pudo obtener los usuarios inactivos:", error);
-          return null;
-        }
-    }
+  async prestarBook(id: number): Promise<Book | null> {
+    try {
+      const existingBook = await this.obtenerBookById(id);
+      if (!existingBook) {
+        return null; // No se encontró una revisión con el ID especificado
+      }
 
+      const updateBookLoad = new Book(
+        existingBook.id,
+        existingBook.title,
+        existingBook.author,
+        existingBook.img_url,
+        existingBook.status,
+        true
+      );
+      const sql = "UPDATE BOOKS SET is_loaded = ? WHERE id = ?";
+      const params:any[] = [updateBookLoad.is_loaded,updateBookLoad.id];
+      await query(sql,params);
 
-    async updateBook(id: number, is_loaded: boolean): Promise<Book | null> {
-        try {
-          const sql = "UPDATE BOOKS SET is_loaded = ? WHERE id = ?";
-          const params: any[] = [is_loaded, id];
-      
-          
-          const [result]: any = await query(sql, params);
-      
-          if (result && result.affectedRows > 0) {
-           
-            const updatedBook = await this.getBookById(id);
-            return updatedBook;
-          } else {
-            return null; // No se encontró un libro con el ID especificado o no se actualizó ningún registro
-          }
-        } catch (error) {
-          console.error("Error al actualizar el campo 'is_loaded' del libro:", error);
-          return null; 
-        }
-    }
-
-    async deleteBook(id: number): Promise<Book | null> {
-        try {
-          const deletedBook = await this.getBookById(id); 
-          if (!deletedBook) {
-            return null;
-          }
-          
-          const sql = "DELETE FROM BOOKS WHERE id = ?";
-          const params: any[] = [id];
-          const [result]: any = await query(sql, params);
-      
-          if (result && result.affectedRows > 0) {
-            return deletedBook;
-          } else {
-            return null;
-          }
-        } catch (error) {
-          console.error("Error al eliminar el libro:", error);
-          return null; 
-        }
-    }
-
-    async updateBookss(
-        id: number,
-        title: string,
-        author: string,
-        img_url: string,
-        status: string,
-        is_loaded: boolean
-      ): Promise<Book | null> {
-        try {
-          const sql = `
-            UPDATE BOOKS
-            SET
-              title = ?,
-              author = ?,
-              img_url = ?,
-              status = ?,
-              is_loaded = ?
-            WHERE id = ?
-          `;
-          const params: any[] = [title, author, img_url, status, is_loaded, id];
-      
-          // Ejecuta la consulta de actualización en la base de datos
-          const [result]: any = await query(sql, params);
-      
-          if (result && result.affectedRows > 0) {
-            // Si al menos una fila fue afectada por la actualización, significa que se actualizó con éxito
-            // Obtén el libro actualizado de la base de datos
-            const updatedBook = await this.getBookById(id);
-            return updatedBook;
-          } else {
-            return null; // No se encontró un libro con el ID especificado o no se actualizó ningún registro
-          }
-        } catch (error) {
-          console.error("Error al actualizar el libro:", error);
-          return null; // Puedes manejar el error de alguna manera adecuada
-        }
-    }
-
-
+      return updateBookLoad;
+    } catch (error) {
+      console.error("Error al actualizar el campo 'is_loaded' del libro:", error);
+      return null; 
+    }  }
 
 }

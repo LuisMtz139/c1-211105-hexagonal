@@ -4,7 +4,7 @@ export class Book{
         readonly title: string,
         readonly author: string,
         readonly img_url:string,
-        readonly status:string,
+        readonly status:boolean,
         readonly is_loaded: boolean
     ){}
 }

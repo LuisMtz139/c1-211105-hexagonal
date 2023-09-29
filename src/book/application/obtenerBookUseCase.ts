@@ -1,18 +1,15 @@
 import { Book } from "../domain/entities/book";
 import { BookRepository } from "../domain/repositories/bookRepository";
 
-
-export class GetAllBookUseCase{
+export class ObtenerBookUseCase{
     constructor (readonly bookRepository : BookRepository){}
 
-    async getAllBook():Promise<Book[]|null>{
+    async obtenerBook():Promise<Book[]|null>{
         try {
-            const book = await this.bookRepository.getAllBook();
+            const book = await this.bookRepository.obetenerBook();
             return book;
         } catch (error) {
             return null;
         }
     }
-
-
 }

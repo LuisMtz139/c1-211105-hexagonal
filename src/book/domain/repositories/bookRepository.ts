@@ -2,20 +2,22 @@ import { Book } from "../entities/book";
 
 
 export interface BookRepository{
-    createBook(title:string,author: string,img_url:string,status:string, is_loaded: boolean):Promise<Book | null>;
+    //agregar libro
+    agregarBook(title:string,author: string,img_url:string,status:boolean,is_loaded: boolean):Promise<Book | null>; 
 
+    //OBETENER TODOS LOS LIBROS
+    obetenerBook():Promise<Book[] | null>;
 
-    getAllBook():Promise<Book[] | null>;
+    //obetener book by id
+    obtenerBookById(id:number):Promise<Book|null>; 
 
-    getBookById(id:number):Promise<Book|null>;
-    updataStatus(id:number, newStatus: string):Promise<Book | null>;
+    //actualizar status
+    updataStatus(id:number):Promise<Book | null>;
+    
+    //ObtenerTodos los libros inactivados
+    getInactiveBook(status:boolean):Promise<Book[]|null>; 
 
-    getAllBookInactive(status:string):Promise<Book[]|null>;
+    //hacer un prestamo del libro 
+    prestarBook(id:number):Promise<Book | null>;
 
-    updateBook(id:number,is_loaded:boolean ):Promise<Book | null>;
-
-    deleteBook(id:number):Promise<Book | null>;
-
-
-    updateBookss(id: number,title: string, author: string, img_url: string, status: string, is_loaded: boolean): Promise<Book | null>
 }

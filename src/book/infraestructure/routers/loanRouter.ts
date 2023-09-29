@@ -1,43 +1,41 @@
 import * as express from 'express';
-import { createBookController, deleteBookController, getAllBookController, getBookByIdController, getBookInactiveController, updateBookController,  updateStatusController } from '../dependencies';
+import { agregarBookController, getInactiveBookController, obtenerBookByIdController, obtenerBookController, prestarBookController, updateStatusController } from '../dependencies';
 
 export const bookRouter = express.Router();
 
+
+//agregar un libro
 bookRouter.post(
-    "/addBook", 
-    createBookController.create.bind(createBookController)
+    "/", 
+    agregarBookController.agregarBook.bind(agregarBookController)
 );
 
+
+//Obtener todos los book
 bookRouter.get(
-    "/getAllBook", 
-    getAllBookController.getAllBook.bind(getAllBookController)
+    "/getBooks", 
+    obtenerBookController.obetenreBook.bind(obtenerBookController)
+)
+//obtener BookById
+bookRouter.get(
+    "/getBookById/:id",
+    obtenerBookByIdController.obtenerBookByIdBookController.bind(obtenerBookByIdController)
 )
 
-bookRouter.get(
-    "/getBookById/:id", 
-    getBookByIdController.getBook.bind(getBookByIdController)
-)
-
+//updateStatus
 bookRouter.put(
-    "/actualizar", 
+    "/updateStatus/:id", 
     updateStatusController.updateStatus.bind(updateStatusController)
 )
 
+//obetener la lista de los book inactives
 bookRouter.get(
-    "/getBookInactivate",
-     getBookInactiveController.getBookInactive.bind(getBookInactiveController)
+    "/getBookInactive", 
+    getInactiveBookController.getBookInactive.bind(getInactiveBookController)
 )
+
+//realizar un prestamo del libro 
 bookRouter.put(
-    "/updateBook", 
-    updateBookController.updateBook.bind(updateBookController)
-)
-
-bookRouter.delete(
-    "/EliminarBook/:id",
-     deleteBookController.deleteBook.bind(deleteBookController)
-)
-
-bookRouter.patch(
-    "/actualizarBook/:id",
-     updateBookController.updateBook.bind(updateBookController)
+    "/preestarBookLean/:id", 
+    prestarBookController.prestarBook.bind(prestarBookController)
 )
