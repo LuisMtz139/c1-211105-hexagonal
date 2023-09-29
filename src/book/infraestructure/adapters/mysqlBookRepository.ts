@@ -103,14 +103,7 @@ async getInactiveBook(status: boolean): Promise<Book[] | null> {
         return null; // No se encontró una revisión con el ID especificado
       }
 
-      const updateBookLoad = new Book(
-        existingBook.id,
-        existingBook.title,
-        existingBook.author,
-        existingBook.img_url,
-        existingBook.status,
-        true
-      );
+      const updateBookLoad = new Book(existingBook.id,existingBook.title,existingBook.author,existingBook.img_url,existingBook.status,true);
       const sql = "UPDATE BOOKS SET is_loaded = ? WHERE id = ?";
       const params:any[] = [updateBookLoad.is_loaded,updateBookLoad.id];
       await query(sql,params);
@@ -120,5 +113,31 @@ async getInactiveBook(status: boolean): Promise<Book[] | null> {
       console.error("Error al actualizar el campo 'is_loaded' del libro:", error);
       return null; 
     }  }
+
+    async devolverAlmacen(id: number): Promise<Book | null> {
+      try {
+        const existingBook = await this.obtenerBookById(id);
+        if (!existingBook) {
+          return null; // No se encontró una revisión con el ID especificado
+        }
+
+        const updateBookStore = new Book(
+          existingBook.id,
+          existingBook.title,
+          existingBook.author,
+          existingBook.img_url,
+          existingBook.status,
+          false
+        );
+        const sql = "UPDATE BOOKS SET is_loaded = ? WHERE id = ?";
+        const params:any[] = [updateBookStore.is_loaded,updateBookStore.id];
+        await query(sql,params);
+
+        return updateBookStore;
+      } catch (error) {
+        console.error("Error al actualizar el campo 'is_loaded' del libro:", error);
+        return null; 
+      }
+  }
 
 }

@@ -20,4 +20,6 @@ export interface BookRepository{
     //hacer un prestamo del libro 
     prestarBook(id:number):Promise<Book | null>;
 
+    //devolver al almacen 
+    devolverAlmacen(id:number):Promise<Book | null>;
 }

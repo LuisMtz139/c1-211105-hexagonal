@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { agregarBookController, getInactiveBookController, obtenerBookByIdController, obtenerBookController, prestarBookController, updateStatusController } from '../dependencies';
+import { agregarBookController, devolverAlmacenController, getInactiveBookController, obtenerBookByIdController, obtenerBookController, prestarBookController, updateStatusController } from '../dependencies';
 
 export const bookRouter = express.Router();
 
@@ -38,4 +38,10 @@ bookRouter.get(
 bookRouter.put(
     "/preestarBookLean/:id", 
     prestarBookController.prestarBook.bind(prestarBookController)
+)
+
+//devolver al almacen
+bookRouter.put(
+    "/devolverBook/:id", 
+    devolverAlmacenController.devolverLibro.bind(devolverAlmacenController)
 )

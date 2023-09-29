@@ -1,4 +1,5 @@
 import { AgregarBookUseCase } from "../application/agregarBookUseCase";
+import { DevolverAlmacenUseCase } from "../application/devolverAlmacenUseCase";
 import { GetBookInactiveUseCase } from "../application/getInactiveBookUseCase";
 import { ObtenerBookByIdUseCase } from "../application/obtenerBookByIdUseCase";
 import { ObtenerBookUseCase } from "../application/obtenerBookUseCase";
@@ -7,6 +8,7 @@ import { UpdateStatusUseCase } from "../application/updateStatusBookUseCase";
 import { MysqlBookRepository } from "./adapters/mysqlBookRepository";
 import { ObtenerBookController } from "./controllers/ObtenerBookController";
 import { AgregarBookController } from "./controllers/agregarBookController";
+import { DevolverAlmacenController } from "./controllers/devolverAlmacenController";
 import { GetInactiveBookController } from "./controllers/getInactiveBookController";
 import { ObtenerBookByIdController } from "./controllers/obtenerBookByIdController";
 import { PrestarBookController } from "./controllers/prestarBookController";
@@ -30,6 +32,7 @@ export const obtenerBookByIdUseCase = new ObtenerBookByIdUseCase(mysqlBookReposi
 export const updateStatusUseCase = new UpdateStatusUseCase(mysqlBookRepository);
 export const getBookInactiveUseCase = new GetBookInactiveUseCase(mysqlBookRepository);
 export const prestarBookUseCase = new PrestarBookUseCase(mysqlBookRepository);
+export const devolverAlmacenUseCase = new DevolverAlmacenUseCase(mysqlBookRepository);
 
 
 
@@ -43,6 +46,7 @@ export const obtenerBookByIdController = new ObtenerBookByIdController(obtenerBo
 export const updateStatusController = new UpdateStatusController(updateStatusUseCase);
 export const getInactiveBookController = new GetInactiveBookController(getBookInactiveUseCase);
 export const prestarBookController = new PrestarBookController(prestarBookUseCase);
+export const devolverAlmacenController = new DevolverAlmacenController(devolverAlmacenUseCase);
 
 
 
