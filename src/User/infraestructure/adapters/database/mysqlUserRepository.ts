@@ -525,6 +525,48 @@ async eliminarReseña(userId: number, reviewId: String): Promise<boolean> {
       throw new Error('Error al verificar si el usuario ha prestado y devuelto el libro');
     }
   }
+   //ActualizarResena unicamente el usuario que agrego la reseña
+   async actualizarResena(userId: number, bookId: number, updatedReview: string): Promise<boolean | null> {
+    try {
+      const selectSql = `
+        SELECT id, status
+        FROM Review
+        WHERE id_User = ? AND id_Book = ?
+      `;
+      const selectParams: any[] = [userId, bookId];
+      const [selectResult]: any = await query(selectSql, selectParams);
+  
+      if (!selectResult || selectResult.length === 0) {
+        throw new Error(`No se encontró una reseña asociada al usuario con el ID ${userId} y el libro con el ID ${bookId}`);
+      }
+  
+      const { id, status } = selectResult[0];
+  
+      if (!status) {
+        throw new Error(`La reseña con ID ${id} no está activa (status = false) y no se puede actualizar.`);
+      }
+  
+      const updateSql = `
+        UPDATE Review
+        SET review_text = ?
+        WHERE id = ?
+      `;
+      const updateParams: any[] = [updatedReview, id];
+      const [updateResult]: any = await query(updateSql, updateParams);
+  
+      if (!updateResult || updateResult.affectedRows === 0) {
+        throw new Error(`No se pudo actualizar la reseña con ID ${id}`);
+      }
+  
+      console.log(`Reseña con ID ${id} actualizada correctamente para el usuario con ID ${userId} y el libro con ID ${bookId}.`);
+      return true;
+    } catch (error) {
+      console.error('Error al actualizar la reseña:', (error as Error).message);
+      throw new Error('Error al actualizar la reseña');
+    }
+  }
+  
+
   
 
 

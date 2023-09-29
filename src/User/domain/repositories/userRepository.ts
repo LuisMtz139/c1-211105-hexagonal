@@ -47,5 +47,8 @@ export interface UserRepository{
     //Escribir resena del libro unicamente si ha prestado el libro y lo ha devuelto
     escribirResena(userId: number, bookId: number, reviewText: string): Promise<boolean | null>;
 
+    //ActualizarResena unicamente el usuario que agrego la reseña
+    actualizarResena(userId: number, bookId: number, updatedReview: string): Promise<boolean | null>;
+
 }
     

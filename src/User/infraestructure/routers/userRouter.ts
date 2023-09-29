@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { activeUserController, addUserContoller, cerrarSesionController, deleteUserController, devolverLibroController, eliminarResenaController, escribirResenaController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, prestarLibroController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
+import { activeUserController, actualizarResenaController, addUserContoller, cerrarSesionController, deleteUserController, devolverLibroController, eliminarResenaController, escribirResenaController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, prestarLibroController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -87,3 +87,9 @@ userRouter.post(
     '/escribirResena',
     escribirResenaController.escribirResena.bind(escribirResenaController)
 );
+
+//actualizarResena 
+userRouter.put(
+    '/actualizarResena',
+    actualizarResenaController.actualizarResena.bind(actualizarResenaController)
+  );
