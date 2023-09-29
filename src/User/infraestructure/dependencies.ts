@@ -21,6 +21,8 @@ import { IniciarSesionUseCase } from '../application/iniciarSesionUseCase';
 import { IniciarSesionUserController } from './controllers/iniciarSesionUserController';
 import { CerarSesionUseCase } from '../application/cerrarSesionUseCase';
 import { CerrarSesionController } from './controllers/cerrarSesionController';
+import { PrestarLibroUseCase } from '../application/prestarLibroUseCase';
+import { PrestarLibroController } from './controllers/prestarLibroUserController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -37,6 +39,7 @@ export const listInactiveUserUseCase = new ListInactiveUserUseCase(mysqlUserRepo
 export const filterUserUseCase = new FilterUserUseCase(mysqlUserRepository);
 export const iniciarSesionUseCase = new IniciarSesionUseCase(mysqlUserRepository);
 export const cerarSesionUseCase = new CerarSesionUseCase(mysqlUserRepository);
+export const prestarLibroUseCase = new PrestarLibroUseCase(mysqlUserRepository);
 
 
 
@@ -52,6 +55,7 @@ export const listInactiveUserController = new ListInactiveUserController(listIna
 export const filterUserController = new FilterUserController(filterUserUseCase)
 export const iniciarSesionUserController = new IniciarSesionUserController(iniciarSesionUseCase)
 export const cerrarSesionController = new CerrarSesionController(cerarSesionUseCase)
+export const prestarLibroController = new PrestarLibroController(prestarLibroUseCase)
 
 
 

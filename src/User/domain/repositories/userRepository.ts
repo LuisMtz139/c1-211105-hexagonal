@@ -37,5 +37,9 @@ export interface UserRepository{
     //cerrar sesion
     cerrarSesion(id:number):Promise<User | null>;
 
+    //cuando el usuario  tiene libros prestados y si el libro esta prestado retornar un mensaje donde diga que el libro esta prestado
+    //prestar un libro unicamente si el usuario no tiene un libro prestado
+    prestarLibro(userId: number, bookId: number): Promise<string | null>;
+
 }
     

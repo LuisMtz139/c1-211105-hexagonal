@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { activeUserController, addUserContoller, cerrarSesionController, deleteUserController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
+import { activeUserController, addUserContoller, cerrarSesionController, deleteUserController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, prestarLibroController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -65,3 +65,10 @@ userRouter.post(
     '/cerrarSesion',
     cerrarSesionController.run.bind(cerrarSesionController)
 )
+
+//prestarLibro
+userRouter.post(
+    '/prestarLibro',
+    prestarLibroController.prestarLibroUser.bind(prestarLibroController)
+);
+

@@ -351,9 +351,102 @@ async cerrarSesion(id: number): Promise<User | null> {
   } catch (error) {
     console.error('Errro al cerar sesion:', error);
     throw new Error('Error al cerrar sesion');
-  }}
+  }
+}
 
 
+
+//prestar un libro 
+ //prestar un libro unicamente si el usuario no tiene un libro prestado
+
+ async checkBookAvailability(bookId: number): Promise<boolean> {
+  try {
+    const sql = `
+      SELECT is_loaded, status
+      FROM books
+      WHERE id = ?
+    `;
+    const params: any[] = [bookId];
+    const [rows]: any = await query(sql, params);
+
+    if (rows && rows.length > 0) {
+      const book = rows[0];
+      return book.is_loaded && book.status;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error al verificar la disponibilidad del libro:', error);
+    throw new Error('Error al verificar la disponibilidad del libro');
+  }
+}
+
+async hasUserLoanedBook(userId: number, bookId: number): Promise<boolean> {
+  try {
+    const sql = `
+      SELECT COUNT(*) AS count
+      FROM prestamos
+      WHERE id_User = ? AND id_Book = ? AND estado = true;
+    `;
+    const params: any[] = [userId, bookId];
+    const [rows]: any = await query(sql, params);
+
+    return rows && rows.length > 0 && rows[0].count > 0;
+  } catch (error) {
+    console.error('Error al verificar si el usuario ha prestado el libro:', error);
+    throw new Error('Error al verificar si el usuario ha prestado el libro');
+  }
+}
+async performBookLoan(userId: number, bookId: number): Promise<void> {
+  try {
+    const updateBookSql = `
+      UPDATE books
+      SET is_loaded = false
+      WHERE id = ?
+    `;
+    const updateBookParams: any[] = [bookId];
+    await query(updateBookSql, updateBookParams);
+
+    const prestamoDate = new Date();  // Fecha actual como fecha de préstamo
+
+    // Sumar 30 días a la fecha de préstamo para la fecha de entrega
+    const entregaDate = new Date();
+    entregaDate.setDate(prestamoDate.getDate() + 30);  // Asumiendo un préstamo de 30 días
+
+    const insertPrestamoSql = `
+      INSERT INTO prestamos (prestamo, entrega, estado, id_Book, id_User)
+      VALUES (?, ?, true, ?, ?)
+    `;
+    const insertPrestamoParams: any[] = [prestamoDate, entregaDate, bookId, userId];
+    await query(insertPrestamoSql, insertPrestamoParams);
+  } catch (error) {
+    console.error('Error al realizar el préstamo del libro:', error);
+    throw new Error('Error al realizar el préstamo del libro');
+  }
+}
+
+async prestarLibro(userId: number, bookId: number): Promise<string | null> {
+  try {
+    const isBookAvailable = await this.checkBookAvailability(bookId);
+
+    if (!isBookAvailable) {
+      return "El libro no está disponible para préstamo.";
+    }
+
+    const hasLoanedBook = await this.hasUserLoanedBook(userId, bookId);
+
+    if (hasLoanedBook) {
+      return "El usuario ya ha prestado este libro.";
+    }
+
+    await this.performBookLoan(userId, bookId);
+
+    return "Libro prestado exitosamente.";
+  } catch (error) {
+    console.error('Error al prestar el libro:', error);
+    throw new Error('Error al prestar el libro');
+  }
+}
 
 }
 
