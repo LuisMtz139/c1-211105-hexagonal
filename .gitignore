@@ -3,7 +3,7 @@
 .vscode/
 
 # Dependencias
-node_modules
+node_modules/
 
 # Directorio de salida
 dist/
