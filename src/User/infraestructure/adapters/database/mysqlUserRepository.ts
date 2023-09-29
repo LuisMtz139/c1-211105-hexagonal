@@ -448,6 +448,43 @@ async prestarLibro(userId: number, bookId: number): Promise<string | null> {
   }
 }
 
+//devolver un libro unicamente si hay un libro prestado
+//devolver un libro unicamente si hay un libro prestado
+async devolverLibro(userId: number, bookId: number): Promise<string | null> {
+  try {
+    // Verificar si el usuario tiene el libro prestado
+    const hasLoanedBook = await this.hasUserLoanedBook(userId, bookId);
+
+    if (!hasLoanedBook) {
+      return "El usuario no ha prestado este libro.";
+    }
+
+    // Actualizar el estado de préstamo del libro a true
+    const updateBookSql = `
+      UPDATE books
+      SET is_loaded = true
+      WHERE id = ?
+    `;
+    const updateBookParams: any[] = [bookId];
+    await query(updateBookSql, updateBookParams);
+
+    // Marcar el préstamo como devuelto
+    const updatePrestamoSql = `
+      UPDATE prestamos
+      SET estado = false
+      WHERE id_User = ? AND id_Book = ?
+    `;
+    const updatePrestamoParams: any[] = [userId, bookId];
+    await query(updatePrestamoSql, updatePrestamoParams);
+
+    return "Libro devuelto exitosamente.";
+  } catch (error) {
+    console.error('Error al devolver el libro:', error);
+    throw new Error('Error al devolver el libro');
+  }
+}
+
+
 }
 
 
