@@ -44,5 +44,8 @@ export interface UserRepository{
     //Devolver el libro unicamente si se tiene un libro prestado
     devolverLibro(userId: number, bookId: number): Promise<string | null>;
 
+    //Escribir resena del libro unicamente si ha prestado el libro y lo ha devuelto
+    escribirResena(userId: number, bookId: number, reviewText: string): Promise<boolean | null>;
+
 }
     

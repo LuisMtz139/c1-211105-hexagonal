@@ -11,7 +11,7 @@ interface FilterOptions {
 }
 
 
-export class MysqlUserRepository implements UserRepository { 
+export class MysqlUserRepository implements UserRepository {
 
   //Agregar
   async addUser(name: string, password: string, email: string, status: boolean): Promise<User> {
@@ -478,7 +478,54 @@ async eliminarReseña(userId: number, reviewId: String): Promise<boolean> {
     console.error('Error al eliminar la reseña:', (error as Error).message);
     throw new Error('Error al eliminar la reseña');
   }}
+  //Escribir resena del libro unicamente si ha prestado el libro y lo ha devuelto
 
+  async escribirResena(userId: number, bookId: number, reviewText: string): Promise<boolean | null> {
+    try {
+      // Verificar si el usuario ha prestado y devuelto el libro
+      const hasLoanedAndReturnedBook = await this.hasLoanedAndReturnedBook(userId, bookId);
+  
+      if (!hasLoanedAndReturnedBook) {
+        return null; // El usuario no ha prestado y devuelto el libro
+      }
+  
+      // Guardar la reseña en la base de datos
+      const sql = `
+        INSERT INTO Review (id_User, id_Book, review_text, status)
+        VALUES (?, ?, ?, true)
+      `;
+      const params: any[] = [userId, bookId, reviewText];
+      const [result]: any = await query(sql, params);
+  
+      if (!result || !result.insertId) {
+        throw new Error('No se pudo guardar la reseña.');
+      }
+  
+      console.log(`Reseña guardada correctamente para el usuario con ID ${userId} y el libro con ID ${bookId}.`);
+      return true;
+    } catch (error) {
+      console.error('Error al escribir la reseña:', (error as Error).message);
+      throw new Error('Error al escribir la reseña');
+    }
+  }
+  
+  async hasLoanedAndReturnedBook(userId: number, bookId: number): Promise<boolean> {
+    try {
+      const sql = `
+        SELECT COUNT(*) AS count
+        FROM prestamos
+        WHERE id_User = ? AND id_Book = ? AND estado = false;
+      `;
+      const params: any[] = [userId, bookId];
+      const [rows]: any = await query(sql, params);
+  
+      return rows && rows.length > 0 && rows[0].count > 0;
+    } catch (error) {
+      console.error('Error al verificar si el usuario ha prestado y devuelto el libro:', error);
+      throw new Error('Error al verificar si el usuario ha prestado y devuelto el libro');
+    }
+  }
+  
 
 
 
