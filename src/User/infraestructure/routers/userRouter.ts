@@ -1,5 +1,5 @@
 import * as express from 'express';
-import { activeUserController, addUserContoller, cerrarSesionController, deleteUserController, devolverLibroController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, prestarLibroController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
+import { activeUserController, addUserContoller, cerrarSesionController, deleteUserController, devolverLibroController, eliminarResenaController, filterUserController, getUserByIdController, iniciarSesionUserController, listInactiveUserController, prestarLibroController, updatePasswordUserController, updateUserController, usersContoller } from '../dependencies';
 import { AddUserContoller } from '../controllers/addUserController';
 
 export const userRouter = express.Router();
@@ -75,4 +75,10 @@ userRouter.post(
 userRouter.post(
     '/devolverLibro',
     devolverLibroController.devolverLibroUser.bind(devolverLibroController)
+);
+
+//eliminarReseña
+userRouter.delete(
+    '/eliminarResena/:userId/:reviewId', // Ruta para eliminar una reseña asociada a un usuario
+    eliminarResenaController.eliminarResena.bind(eliminarResenaController)
 );

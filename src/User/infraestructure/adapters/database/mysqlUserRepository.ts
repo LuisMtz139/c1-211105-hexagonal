@@ -2,6 +2,7 @@ import { query } from "../../../../database/mysql";
 import { generateToken } from "../../../../utils/jwtUtils";
 import { User } from "../../../domain/entities/user";
 import { UserRepository } from "../../../domain/repositories/userRepository";
+import { OkPacket, RowDataPacket, ResultSetHeader, FieldPacket, ProcedureCallPacket } from 'mysql2';
 
 
 interface FilterOptions {
@@ -10,7 +11,7 @@ interface FilterOptions {
 }
 
 
-export class MysqlUserRepository implements UserRepository {
+export class MysqlUserRepository implements UserRepository { 
 
   //Agregar
   async addUser(name: string, password: string, email: string, status: boolean): Promise<User> {
@@ -255,32 +256,6 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
     throw new Error('Error al obtener');
   }
 }
-//eliminar reseña no terminada
-async eliminarReseña(userId: number, reviewId: string): Promise<boolean> {
-  const sql = `
-    DELETE FROM reviews
-    WHERE userId = ? AND reviewId = ?
-  `;
-  const params: any[] = [userId, reviewId];
-
-  return new Promise((resolve, reject) => {
-    query(sql, params)
-      .then(([result]: any) => {
-        if (result && result.affectedRows > 0) {
-          console.log(`Reseña con ID ${reviewId} eliminada para el usuario con ID ${userId}.`);
-          resolve(true);
-        } else {
-          console.log(`No se encontró una reseña con ID ${reviewId} para el usuario con ID ${userId}.`);
-          resolve(false);
-        }
-      })
-      .catch((error: any) => {
-        console.error('Error al eliminar la reseña:', error);
-        reject(false);
-      });
-  });
-}
-
 
 //iniciarSesion 
 //quiero iniciar sesion por medio el email y es password, quiero que me hagas una sentencia para poder validar si estos campos existen en la base de datos
@@ -483,6 +458,33 @@ async devolverLibro(userId: number, bookId: number): Promise<string | null> {
     throw new Error('Error al devolver el libro');
   }
 }
+
+async eliminarReseña(userId: number, reviewId: String): Promise<boolean> {
+  try {
+    const sql = `
+      DELETE FROM Review
+      WHERE id_User = ? AND id = ?
+    `;
+    const params: any[] = [userId, reviewId];
+    const [result]: any = await query(sql, params);
+
+    if (!result || result.affectedRows === 0) {
+      throw new Error(`No se encontró una reseña asociada al usuario con el ID ${userId} y la reseña con el ID ${reviewId}`);
+    }
+
+    console.log(`Reseña con ID ${reviewId} eliminada correctamente para el usuario con ID ${userId}.`);
+    return true;
+  } catch (error) {
+    console.error('Error al eliminar la reseña:', (error as Error).message);
+    throw new Error('Error al eliminar la reseña');
+  }}
+
+
+
+
+
+
+
 
 
 }

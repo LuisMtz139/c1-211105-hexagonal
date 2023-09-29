@@ -44,8 +44,5 @@ export interface UserRepository{
     //Devolver el libro unicamente si se tiene un libro prestado
     devolverLibro(userId: number, bookId: number): Promise<string | null>;
 
-    //Eliminar reseña unicamente el usuario que agrego la reseña
-    
-
 }
     

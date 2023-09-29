@@ -25,6 +25,8 @@ import { PrestarLibroUseCase } from '../application/prestarLibroUseCase';
 import { PrestarLibroController } from './controllers/prestarLibroUserController';
 import { DevolverLibroUseCase } from '../application/devolverLibroUseCase';
 import { DevolverLibroController } from './controllers/devolverLibroController';
+import { EliminarResenaUseCase } from '../application/eliminarResenaUseCase';
+import { EliminarResenaController } from './controllers/eliminarReseñaController';
 
 
 export const mysqlUserRepository = new MysqlUserRepository();
@@ -43,6 +45,7 @@ export const iniciarSesionUseCase = new IniciarSesionUseCase(mysqlUserRepository
 export const cerarSesionUseCase = new CerarSesionUseCase(mysqlUserRepository);
 export const prestarLibroUseCase = new PrestarLibroUseCase(mysqlUserRepository);
 export const devolverLibroUseCase = new DevolverLibroUseCase(mysqlUserRepository);
+export const eliminarResenaUseCase = new EliminarResenaUseCase(mysqlUserRepository);
 
 
 
@@ -60,6 +63,7 @@ export const iniciarSesionUserController = new IniciarSesionUserController(inici
 export const cerrarSesionController = new CerrarSesionController(cerarSesionUseCase)
 export const prestarLibroController = new PrestarLibroController(prestarLibroUseCase)
 export const devolverLibroController = new DevolverLibroController(devolverLibroUseCase)
+export const eliminarResenaController = new EliminarResenaController(eliminarResenaUseCase)
 
 
 

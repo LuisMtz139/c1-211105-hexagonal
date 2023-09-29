@@ -1,6 +1,6 @@
 import { UserRepository } from "../domain/repositories/userRepository";
 
-export class DeleteUserUseCase {
+export class EliminarResenaUseCase{
     constructor(private readonly userRepository: UserRepository) {}
 
     async run(userId: number, reviewId: string): Promise<boolean> {
