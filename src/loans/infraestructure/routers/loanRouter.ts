@@ -6,8 +6,8 @@ export const loanRouter = express.Router();
 
 
 loanRouter.post(
-    "/createLoan",
-     createLongController.createLong.bind(createLongController)
+    "/",
+     createLongController.createLonn.bind(createLongController)
 );
 
 loanRouter.delete(

@@ -1,16 +1,45 @@
+import { validate } from "class-validator";
 import { Loan } from "../domain/entities/loans";
 import { LoanRepository } from "../domain/repositories/loansRepository";
+import { ValidationCreateLoan } from "../domain/validations/validationsLoans";
+import { Request, Response } from "express";
 
-export class CreateLonUseCase{
-    constructor(readonly loansRepository: LoanRepository ){}
-    
-    async run( id_Book:Number,id_User: Number, prestamo:String,entrega:String,estado:String ):Promise<Loan | null>{
+export class CreateLoanUseCase {
+    constructor(readonly loanRepository: LoanRepository) {}
+
+    async run(
+        loan: string,
+        delivery: string,
+        status: boolean,
+        id_Book: number,
+        id_User: number
+    ): Promise<Loan | null> {
+        let validationPost = new ValidationCreateLoan(
+            loan,
+            delivery,
+            status,
+            id_Book,
+            id_User
+        );
+
+        const validation = await validate(validationPost);
+
+        if (validation.length > 0) {
+            throw new Error(JSON.stringify(validation));
+        }
+
         try {
-            const createLoan = await this.loansRepository.createLoan(id_Book,id_User, prestamo,entrega,estado)
-            return createLoan;
+            const createdLoan = await this.loanRepository.createLoan(
+                loan,
+                delivery,
+                status,
+                id_Book,
+                id_User
+            );
+            return createdLoan;
         } catch (error) {
-            return null
+            console.error("Error creating loan:", error);
+            return null;
         }
     }
-
 }

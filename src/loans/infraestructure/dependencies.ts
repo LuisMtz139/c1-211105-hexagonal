@@ -1,4 +1,4 @@
-import { CreateLonUseCase } from '../application/createLoanUseCase';
+import { CreateLoanUseCase } from '../application/createLoanUseCase';
 import { DeleteLoanUseCase } from '../application/deleteLoanUseCase';
 import { GetAllLoanUseCase } from '../application/getAllLoanUseCase';
 import { GetLoanByIdUseCase } from '../application/getLoanByIdUseCase';
@@ -20,7 +20,7 @@ export const mysqlLoanRepository = new MysqlLoanRepository();
 
 
 
-export const createLonUseCase = new CreateLonUseCase(mysqlLoanRepository);
+export const createLonUseCase = new CreateLoanUseCase(mysqlLoanRepository);
 export const deleteLoanUseCase = new DeleteLoanUseCase(mysqlLoanRepository);
 export const getAllLoanUseCase = new GetAllLoanUseCase(mysqlLoanRepository);
 export const getLoanByIdUseCase = new GetLoanByIdUseCase(mysqlLoanRepository);

@@ -1,26 +1,26 @@
 import { Request, Response } from "express";
-import { CreateLonUseCase } from "../../application/createLoanUseCase";
+import { CreateLoanUseCase } from "../../application/createLoanUseCase";
 
 
 export class CreateLongController{
     constructor(
-         readonly createLongUseCase: CreateLonUseCase,
+         readonly createLoanUseCase: CreateLoanUseCase,
 
     ) {}
 
-    async createLong(req:Request, res:Response){
+    async createLonn(req:Request, res:Response){
         try{
-            let {prestamo,entrega, estado,id_Book,id_User} = req.body;
-            let createLong = await this.createLongUseCase.run(prestamo,entrega,estado, id_Book,id_User)
+            let {loan,delivery,status,id_Book,id_User} = req.body;
+            let createUser = await this.createLoanUseCase.run(loan,delivery,status, id_Book,id_User );
 
-            if (createLong) {
+            if (createUser) {
                 return res.status(201).send({
                     status:"success",
                     data:{
-                        id:createLong.id,
-                        prestamo:createLong.prestamo,
-                        entrega:createLong.entrega,
-                        estado:createLong.estado,
+                        loan:createUser.loan,
+                        status:createUser.status,
+                        id_Book:createUser.id_Book,
+                        id_User:createUser.id_User,
                     },
                     message:"Creado"
                 });
@@ -35,9 +35,24 @@ export class CreateLongController{
 
 
 
-        }catch(error){
-            return null;
-        }
+        }catch (error) {
+            if (error instanceof Error) {
+      
+              if (error.message.startsWith('[')) {
+                
+                return res.status(400).send({
+                  status: "error",
+                  message: "Validation failed",
+                  errors: JSON.parse(error.message)
+                });
+              }
+            }
+            return res.status(500).send({
+              status: "error",
+              message: "An error occurred while adding the book."
+            });
+          }
     }
+     
 
 }

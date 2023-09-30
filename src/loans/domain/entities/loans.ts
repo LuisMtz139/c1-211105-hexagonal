@@ -1,9 +1,9 @@
 export class Loan {
     constructor(
         readonly id: number,
-        readonly prestamo: string,
-        readonly entrega: string,
-        readonly estado: string,
+        readonly loan: string,//prestamo
+        readonly delivery: string,//entrega
+        readonly status: boolean,
         readonly id_Book: number,
         readonly id_User: number
     ) {}

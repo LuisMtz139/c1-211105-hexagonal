@@ -10,16 +10,18 @@ export class UpdateLoanController {
       try {
         const {
           id,
-          prestamo,
-          entrega,
-          estado,
+          loan,
+          delivery,
+          status,
+
         } = req.body;
   
         // Aquí se llama al caso de uso para actualizar el usuario con todos los campos
         const updateLoan = await this.updateLoanUseCase.updateLoan(id, {
-          prestamo,
-          entrega,
-          estado 
+          loan,
+          delivery,
+          status,
+
         });
   
         if (updateLoan) {
@@ -35,10 +37,21 @@ export class UpdateLoanController {
             message: `No se pudo encontrar ID ${id}`
           });
         }
-      } catch (error) {
-        return res.status(500).json({
+      }catch (error) {
+        if (error instanceof Error) {
+  
+          if (error.message.startsWith('[')) {
+            
+            return res.status(400).send({
+              status: "error",
+              message: "Validation failed",
+              errors: JSON.parse(error.message)
+            });
+          }
+        }
+        return res.status(500).send({
           status: "error",
-          message: "Error al actualizar"
+          message: "An error occurred while adding the book."
         });
       }
     }
