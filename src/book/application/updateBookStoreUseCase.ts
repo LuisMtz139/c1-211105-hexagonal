@@ -4,11 +4,11 @@ import { BookRepository } from "../domain/repositories/bookRepository";
 import { ValidationIdBook } from "../domain/validation/validationBook";
 
 
-export class DevolverAlmacenUseCase{
+export class UpdateBookStoreUseCase{
     constructor(readonly bookRepository: BookRepository){}
 
-    async almacen(id: number): Promise<{ book: Book | null; message?: string }>{
-        const getLoad = await this.bookRepository.devolverAlmacen(id);
+    async updateStore(id: number): Promise<{ book: Book | null; message?: string }>{
+        const getLoad = await this.bookRepository.getBookById(id);
         
         if (!getLoad) {
             return { book: null };
@@ -23,7 +23,7 @@ export class DevolverAlmacenUseCase{
         throw new Error(JSON.stringify(validation));
         }
 
-        const storeUpdate = await this.bookRepository.devolverAlmacen(id)
+        const storeUpdate = await this.bookRepository.updateBookStore(id)
 
         if (!storeUpdate) {
             return { book: null }; // Error al actualizar la revisión

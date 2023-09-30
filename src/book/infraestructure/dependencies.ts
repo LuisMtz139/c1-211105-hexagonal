@@ -1,18 +1,26 @@
-import { AgregarBookUseCase } from "../application/agregarBookUseCase";
-import { DevolverAlmacenUseCase } from "../application/devolverAlmacenUseCase";
-import { GetBookInactiveUseCase } from "../application/getInactiveBookUseCase";
-import { ObtenerBookByIdUseCase } from "../application/obtenerBookByIdUseCase";
-import { ObtenerBookUseCase } from "../application/obtenerBookUseCase";
-import { PrestarBookUseCase } from "../application/prestarBookUseCase";
-import { UpdateStatusUseCase } from "../application/updateStatusBookUseCase";
+import { CreateBookUserCase } from "../application/createBookUseCase";
+import { DeleteBookUseCase } from "../application/deleteBookUseCase";
+import { GetBookByIdUseCasa } from "../application/getBookByIdUseCase";
+import { GetBookInactiveUseCase } from "../application/getBookInactiveUseCase";
+import { GetBooksUseCase } from "../application/getBookUseCase";
+import { UpdateBookLeadUseCase } from "../application/updateBookLoadedUseCase";
+import { UpdateBookStoreUseCase } from "../application/updateBookStoreUseCase";
+import { UpdateStatusUseCase } from "../application/updateStatusUseCase";
 import { MysqlBookRepository } from "./adapters/mysqlBookRepository";
-import { ObtenerBookController } from "./controllers/ObtenerBookController";
-import { AgregarBookController } from "./controllers/agregarBookController";
-import { DevolverAlmacenController } from "./controllers/devolverAlmacenController";
-import { GetInactiveBookController } from "./controllers/getInactiveBookController";
-import { ObtenerBookByIdController } from "./controllers/obtenerBookByIdController";
-import { PrestarBookController } from "./controllers/prestarBookController";
-import { UpdateStatusController } from "./controllers/updateStatusBookController";
+import { CreateBookController } from "./controllers/createBookController";
+import { DeleteBookController } from "./controllers/deleteBookController";
+import { GetBookByIdController } from "./controllers/getBookByIdController";
+import { GetBooksController } from "./controllers/getBookController";
+import { GetBookFilterController } from "./controllers/getBookFilterController";
+import { GetBookInactiveController } from "./controllers/getBookInactiveController";
+import { UpdateBookLeadController } from "./controllers/updateBookLoadedController";
+import { UpdateBookStoreController } from "./controllers/updateBookStoreController";
+import { UpdateStatusController } from "./controllers/updateStatusController";
+import { GetBookReviewsController } from './controllers/getBookReviewController';
+import { UpdateBookController } from "./controllers/updateBookController";
+import { GetBookFilterUseCase } from "../application/getBookFilterUseCase";
+import { GetBookReviewUseCase } from "../application/getBookReviewUseCase";
+import { UpdateBookUseCase } from "../application/updateBookUseCase";
 
 
 
@@ -26,28 +34,34 @@ export const mysqlBookRepository = new MysqlBookRepository();
 
 
 
-export const agregarBookUseCase = new AgregarBookUseCase(mysqlBookRepository);
-export const obtenerBookUseCase = new ObtenerBookUseCase(mysqlBookRepository);
-export const obtenerBookByIdUseCase = new ObtenerBookByIdUseCase(mysqlBookRepository);
-export const updateStatusUseCase = new UpdateStatusUseCase(mysqlBookRepository);
+export const createBookUserCase = new CreateBookUserCase(mysqlBookRepository);
+export const deleteBookUseCase = new DeleteBookUseCase(mysqlBookRepository);
+export const getBookByIdUseCasa = new GetBookByIdUseCasa(mysqlBookRepository);
+export const getBooksUseCase = new GetBooksUseCase(mysqlBookRepository);
+export const getBookFilterUseCase = new GetBookFilterUseCase(mysqlBookRepository);
 export const getBookInactiveUseCase = new GetBookInactiveUseCase(mysqlBookRepository);
-export const prestarBookUseCase = new PrestarBookUseCase(mysqlBookRepository);
-export const devolverAlmacenUseCase = new DevolverAlmacenUseCase(mysqlBookRepository);
+export const getBookReviewUseCase = new GetBookReviewUseCase(mysqlBookRepository);
+export const updateBookUseCase = new UpdateBookUseCase(mysqlBookRepository);
+export const updateBookLeadUseCase = new UpdateBookLeadUseCase(mysqlBookRepository);
+export const updateBookStoreUseCase = new UpdateBookStoreUseCase(mysqlBookRepository);
+export const updateStatusUseCase = new UpdateStatusUseCase(mysqlBookRepository);
 
 
 
 
 
 
-
-export const agregarBookController = new AgregarBookController(agregarBookUseCase);
-export const obtenerBookController = new ObtenerBookController(obtenerBookUseCase);
-export const obtenerBookByIdController = new ObtenerBookByIdController(obtenerBookByIdUseCase);
+export const createBookController = new CreateBookController(createBookUserCase);
+export const deleteBookController = new DeleteBookController(deleteBookUseCase);
+export const getBookByIdController = new GetBookByIdController(getBookByIdUseCasa);
+export const getBooksController = new GetBooksController(getBooksUseCase);
+export const getBookFilterController = new GetBookFilterController(getBookFilterUseCase);
+export const getBookInactiveController = new GetBookInactiveController(getBookInactiveUseCase);
+export const getBookReviewsController = new GetBookReviewsController(getBookReviewUseCase);
+export const updateBookController = new UpdateBookController(updateBookUseCase);
+export const updateBookLeadController = new UpdateBookLeadController(updateBookLeadUseCase);
+export const updateBookStoreController = new UpdateBookStoreController(updateBookStoreUseCase);
 export const updateStatusController = new UpdateStatusController(updateStatusUseCase);
-export const getInactiveBookController = new GetInactiveBookController(getBookInactiveUseCase);
-export const prestarBookController = new PrestarBookController(prestarBookUseCase);
-export const devolverAlmacenController = new DevolverAlmacenController(devolverAlmacenUseCase);
-
 
 
 

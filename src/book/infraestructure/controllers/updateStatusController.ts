@@ -1,5 +1,5 @@
 import { Response, Request } from "express";
-import { UpdateStatusUseCase } from "../../application/updateStatusBookUseCase";
+import { UpdateStatusUseCase } from "../../application/updateStatusUseCase";
 
 
 export class UpdateStatusController {

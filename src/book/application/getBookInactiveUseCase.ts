@@ -1,8 +1,7 @@
 import { validate } from "class-validator";
-import { Book } from "../domain/entities/book";
 import { BookRepository } from "../domain/repositories/bookRepository";
 import { ValidationStatusBook } from "../domain/validation/validationBook";
-
+import { Book } from "../domain/entities/book";
 
 
 export class GetBookInactiveUseCase{
@@ -18,7 +17,7 @@ export class GetBookInactiveUseCase{
 
         try {
           // Llama al método del repositorio que obtiene los libros inactivos
-          const inactiveBooks = await this.bookRepository.getInactiveBook(status);
+          const inactiveBooks = await this.bookRepository.getBookInactive(status);
     
           return inactiveBooks;
         } catch (error) {

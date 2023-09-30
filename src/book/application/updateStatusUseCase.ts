@@ -1,7 +1,8 @@
+import { validate } from "class-validator";
 import { Book } from "../domain/entities/book";
 import { BookRepository } from "../domain/repositories/bookRepository";
-import { validate } from "class-validator";
 import { ValidationIdBook } from "../domain/validation/validationBook";
+
 
 
 export class UpdateStatusUseCase {
@@ -16,7 +17,7 @@ export class UpdateStatusUseCase {
       }
   
       // Obtén el libro que deseas actualizar
-      const updateStatus = await this.bookRepository.obtenerBookById(id);
+      const updateStatus = await this.bookRepository.getBookById(id);
   
       if (!updateStatus) {
         return { book: null };

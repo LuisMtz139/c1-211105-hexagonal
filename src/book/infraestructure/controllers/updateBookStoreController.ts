@@ -1,16 +1,15 @@
-import { DevolverAlmacenUseCase } from "../../application/devolverAlmacenUseCase";
+import { UpdateBookStoreUseCase } from "../../application/updateBookStoreUseCase";
 import { Request, Response } from "express";
 
-
-export class DevolverAlmacenController {
-    constructor(private readonly devolverAlmacenUseCase: DevolverAlmacenUseCase) {}
+export class UpdateBookStoreController {
+    constructor(private readonly updateBookStoreUseCase: UpdateBookStoreUseCase) {}
   
-    async devolverLibro(req: Request, res: Response) {
+    async updateBookStore(req: Request, res: Response) {
       try {
   
         const { id} = req.params;
   
-        const updateStore = await this.devolverAlmacenUseCase.almacen(Number(id))
+        const updateStore = await this.updateBookStoreUseCase.updateStore(Number(id))
   
         if (updateStore.book) {
           res.status(200).json({ success: true, message: 'Valor "status" actualizado a false.', book: updateStore });
@@ -35,7 +34,7 @@ export class DevolverAlmacenController {
           }
           return res.status(500).send({
             status: "error",
-            message: "Se produjo un error al agregar el libro."
+            message: "An error occurred while adding the book."
           });
       }
     }

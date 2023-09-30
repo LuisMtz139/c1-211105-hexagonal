@@ -1,14 +1,13 @@
+import { validate } from "class-validator";
 import { Book } from "../domain/entities/book";
 import { BookRepository } from "../domain/repositories/bookRepository";
-import { validate } from "class-validator";
 import { ValidationIdBook } from "../domain/validation/validationBook";
 
-
-export class PrestarBookUseCase{
+export class UpdateBookLeadUseCase{
     constructor(readonly bookRepository: BookRepository){}
 
-    async prestarBook(id: number): Promise<{ book: Book | null; message?: string }>{
-        const getLoad = await this.bookRepository.prestarBook(id);
+    async updateLoaded(id: number): Promise<{ book: Book | null; message?: string }>{
+        const getLoad = await this.bookRepository.getBookById(id);
         if (!getLoad) {
             return { book: null };
         }
@@ -22,7 +21,7 @@ export class PrestarBookUseCase{
             throw new Error(JSON.stringify(validation));
         }
 
-        const loadUpdate = await this.bookRepository.prestarBook(id)
+        const loadUpdate = await this.bookRepository.updateBookLoaded(id)
 
         if (!loadUpdate) {
             return { book: null }; // Error al actualizar la revisión

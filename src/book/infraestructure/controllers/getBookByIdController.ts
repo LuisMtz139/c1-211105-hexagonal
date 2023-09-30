@@ -1,27 +1,27 @@
 import { Response,Request } from "express";
-import { ObtenerBookByIdUseCase } from "../../application/obtenerBookByIdUseCase";
+import { GetBookByIdUseCasa } from "../../application/getBookByIdUseCase";
 
 
-export class ObtenerBookByIdController{
+export class GetBookByIdController{
 
-    constructor (readonly obtenerBookById : ObtenerBookByIdUseCase){}
+    constructor (readonly getBookUseCase : GetBookByIdUseCasa){}
 
-    async obtenerBookByIdBookController(req:Request, res:Response){
+    async getBookById(req:Request, res:Response){
         try {
             const id = Number(req.params.id);
-            const books = await this.obtenerBookById.obtenerBookByid(id);
+            const books = await this.getBookUseCase.getBookById(id);
             
             if (books) {
               return res.status(200).json({
                 status: "success",
                 data: books,
-                message: "Lista de book by id",
+                message: "Lista de libros por usuario obtenida exitosamente",
               });
             } else {
               return res.status(404).json({
                 status: "error",
                 data: [],
-                message: "No se encontraron book",
+                message: "No se encontraron reseñas por usuario",
               });
             }
           } catch (error) {
@@ -38,7 +38,7 @@ export class ObtenerBookByIdController{
             }
             return res.status(500).send({
               status: "error",
-              message: "Se produjo un error al agregar el libro."
+              message: "An error occurred while adding the book."
             });
           }
     }
