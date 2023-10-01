@@ -1,6 +1,8 @@
 import * as mysql from "mysql2/promise";  // Cambiado de `mysql.createPool` a `createPool`
 import { Signale } from "signale";
+
 import * as dotenv from "dotenv";
+
 
 const signale = new Signale();
 dotenv.config();
