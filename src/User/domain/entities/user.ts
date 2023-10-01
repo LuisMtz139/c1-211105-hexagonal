@@ -8,3 +8,4 @@ export class User{
         readonly status: boolean,
     ){}
 }
+
