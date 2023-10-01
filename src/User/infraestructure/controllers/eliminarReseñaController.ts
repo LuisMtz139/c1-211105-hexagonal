@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { EliminarResenaUseCase } from "../../application/eliminarResenaUseCase";
+import { EliminarResenaUseCase } from "../../application/deleteResenaUseCase";
 
 export class EliminarResenaController {
     constructor(private readonly eliminarResenaUseCase: EliminarResenaUseCase) {}
@@ -22,12 +22,22 @@ export class EliminarResenaController {
                 status: "error",
                 message: "Reseña no encontrada o no se puede eliminar"
             });
-        } catch (error) {
-            console.error('Error deleting review:', error);
-            return res.status(500).json({
+        }catch (error) {   
+            if (error instanceof Error) {
+
+                if (error.message.startsWith('[')) {
+                  
+                  return res.status(400).send({
+                    status: "error",
+                    message: "Validation failed",
+                    errors: JSON.parse(error.message)
+                  });
+                }
+              }
+              return res.status(500).send({
                 status: "error",
-                message: "Error inesperado, por favor inténtelo de nuevo"
-            });
+                message: "An error occurred while adding the book."
+              });
         }
     }
     

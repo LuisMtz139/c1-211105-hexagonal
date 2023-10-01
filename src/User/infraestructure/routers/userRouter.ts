@@ -8,7 +8,7 @@ export const userRouter = express.Router();
 userRouter.post(
     //ejemplo de funcionamiento
     //user+direccion
-    "/addUser/",
+    "/",
     addUserContoller.addUser.bind(addUserContoller)
 )
 //eliminar

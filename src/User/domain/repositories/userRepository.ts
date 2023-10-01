@@ -3,7 +3,7 @@ import { User } from "../entities/user";
 export interface UserRepository{
     //agregar un usuario
     //se toma como parametro el nombre y devuelve una promesa
-    addUser(name:String, passwordpassword:String, email:String, status:boolean ): Promise<User>|null;
+    addUser(name:String, password:String, email:String, status:boolean ): Promise<User>|null;
     //eliminar usuario
     deleteUser(userId:string): Promise<boolean>;
 
@@ -17,7 +17,7 @@ export interface UserRepository{
     updatePassword(id: number, newPassword: string): Promise<User | null>;
 
     //actualizar usuairo 
-    updateUser(id: number,newUser?: { name?: string; password?: string; email?: string; status?: string }): Promise<User | null>;
+    updateUser(id: number,newUser?: { name?: string; password?: string; email?: string; status?: boolean }): Promise<User | null>;
 
     //activar usuario 
     activeUser(id: number): Promise<User | null>;
@@ -29,7 +29,7 @@ export interface UserRepository{
     filterUser( filter: string, email?: string, name?: string ): Promise<User | User[] | null>
     
     //eliminar reseña(unicamente el usuario que agrego que agrego la reseña)
-    eliminarReseña(userId: number, reviewId: String): Promise<boolean>;
+    eliminarReseña(userId: number, id_review: String): Promise<boolean>;
 
     //iniciar sesion
     iniciarSesion(email: string, password: string): Promise<User | null>;

@@ -1,4 +1,4 @@
-import { PrestarLibroUseCase } from '../../application/prestarLibroUseCase';
+import { PrestarLibroUseCase } from '../../application/lendBookUseCase';
 import { Request, Response } from "express";
 
 export class PrestarLibroController {
@@ -8,37 +8,40 @@ export class PrestarLibroController {
 
     async prestarLibroUser(req: Request, res: Response) {
         try {
-            const { userId, bookId } = req.body; // Supongamos que recibes el ID del usuario y el ID del libro desde la solicitud
+            const {userId, bookId} = req.body;
 
-            if (!userId || !bookId) {
-                return res.status(400).send({
-                    status: "error",
-                    message: "Se requieren los campos 'userId' y 'bookId' en la solicitud."
-                });
-            }
+            const load = await this.prestarLibroUseCase.run  (userId, bookId);
 
-            const result = await this.prestarLibroUseCase.run(userId, bookId);
-
-            if (result === "Libro prestado exitosamente.") {
+            if (load === "Libro prestado exitosamente.") {
                 return res.status(201).send({
                     status: "success",
-                    data: [],
-                    message: result
+                    data: load,
+                    message: load
                 });
             } else {
                 return res.status(400).send({
                     status: "error",
                     data: [],
-                    message: result
+                    message: load
                 });
             }
+
         } catch (error) {
-            console.error('Error al prestar el libro:', error);
-            return res.status(500).send({
+            if (error instanceof Error) {
+
+                if (error.message.startsWith('[')) {
+                  
+                  return res.status(400).send({
+                    status: "error",
+                    message: "Validation failed",
+                    errors: JSON.parse(error.message)
+                  });
+                }
+              }
+              return res.status(500).send({
                 status: "error",
-                data: [],
-                message: "Error interno al prestar el libro."
-            });
+                message: "An error occurred while adding the book."
+              });
         }
     }
 }

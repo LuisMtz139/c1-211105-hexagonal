@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IniciarSesionUseCase } from '../../application/iniciarSesionUseCase';
+import { IniciarSesionUseCase } from '../../application/loginUseCase';
 
 export class IniciarSesionUserController {
     constructor(
@@ -36,12 +36,22 @@ export class IniciarSesionUserController {
                     message: "Credenciales inválidas. Verifica tu email y contraseña.",
                 });
             }
-        } catch (error) {
-            console.error('Error al iniciar sesión:', error);
-            return res.status(500).json({
+        }catch (error) {   
+            if (error instanceof Error) {
+
+                if (error.message.startsWith('[')) {
+                  
+                  return res.status(400).send({
+                    status: "error",
+                    message: "Validation failed",
+                    errors: JSON.parse(error.message)
+                  });
+                }
+              }
+              return res.status(500).send({
                 status: "error",
-                message: "Error al iniciar sesión.",
-            });
+                message: "An error occurred while adding the book."
+              });
         }
     }
 }

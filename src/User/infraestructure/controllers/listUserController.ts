@@ -24,13 +24,23 @@ export class UsersContoller{
             status: 'error',
             message: 'No se encontraron usuarios',
           });
-        } catch (error) {
-          console.error('Error retrieving user list:', error);
-          return res.status(500).json({
-            status: 'error',
-            message: 'Error inesperado, por favor inténtelo de nuevo',
-          });
-        }
+        } catch (error) {   
+          if (error instanceof Error) {
+
+              if (error.message.startsWith('[')) {
+                
+                return res.status(400).send({
+                  status: "error",
+                  message: "Validation failed",
+                  errors: JSON.parse(error.message)
+                });
+              }
+            }
+            return res.status(500).send({
+              status: "error",
+              message: "An error occurred while adding the book."
+            });
+      }
       }
     }
     

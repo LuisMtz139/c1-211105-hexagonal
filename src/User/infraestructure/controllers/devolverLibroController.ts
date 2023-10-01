@@ -1,4 +1,4 @@
-import { DevolverLibroUseCase } from '../../application/devolverLibroUseCase';
+import { DevolverLibroUseCase } from '../../application/returnBookUseCase';
 import { Request, Response } from "express";
 
 export class DevolverLibroController {
@@ -32,13 +32,22 @@ export class DevolverLibroController {
                     message: result
                 });
             }
-        } catch (error) {
-            console.error('Error al devolver el libro:', error);
-            return res.status(500).send({
+        }catch (error) {   
+            if (error instanceof Error) {
+
+                if (error.message.startsWith('[')) {
+                  
+                  return res.status(400).send({
+                    status: "error",
+                    message: "Validation failed",
+                    errors: JSON.parse(error.message)
+                  });
+                }
+              }
+              return res.status(500).send({
                 status: "error",
-                data: [],
-                message: "Error interno al devolver el libro."
-            });
+                message: "An error occurred while adding the book."
+              });
         }
     }
 }

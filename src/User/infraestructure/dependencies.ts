@@ -17,19 +17,19 @@ import { ListInactiveUserUseCase } from '../application/listUserInactiveUseCase'
 import { ListInactiveUserController } from './controllers/listInactiveUserController';
 import { FilterUserUseCase } from '../application/filterUserUseCase';
 import { FilterUserController } from './controllers/filterUserController';
-import { IniciarSesionUseCase } from '../application/iniciarSesionUseCase';
+import { IniciarSesionUseCase } from '../application/loginUseCase';
 import { IniciarSesionUserController } from './controllers/iniciarSesionUserController';
-import { CerarSesionUseCase } from '../application/cerrarSesionUseCase';
+import { CerarSesionUseCase } from '../application/singOffUseCase';
 import { CerrarSesionController } from './controllers/cerrarSesionController';
-import { PrestarLibroUseCase } from '../application/prestarLibroUseCase';
+import { PrestarLibroUseCase } from '../application/lendBookUseCase';
 import { PrestarLibroController } from './controllers/prestarLibroUserController';
-import { DevolverLibroUseCase } from '../application/devolverLibroUseCase';
+import { DevolverLibroUseCase } from '../application/returnBookUseCase';
 import { DevolverLibroController } from './controllers/devolverLibroController';
-import { EliminarResenaUseCase } from '../application/eliminarResenaUseCase';
+import { EliminarResenaUseCase } from '../application/deleteResenaUseCase';
 import { EliminarResenaController } from './controllers/eliminarReseñaController';
-import { EscribirResenaUseCase } from '../application/escribirResenaUseCase';
+import { EscribirResenaUseCase } from '../application/writeReseUseCase';
 import { EscribirResenaController } from './controllers/escribirResenaController';
-import { ActualizarResenaUseCase } from '../application/actualizarResenaUseCase';
+import { ActualizarResenaUseCase } from '../application/updateReseUseCase';
 import { ActualizarResenaController } from './controllers/actualizarResenaController';
 
 

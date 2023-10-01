@@ -14,10 +14,10 @@ interface FilterOptions {
 export class MysqlUserRepository implements UserRepository {
 
   //Agregar
-  async addUser(name: string, password: string, email: string, status: boolean): Promise<User> {
+  async addUser(name: string, email: string,  password: string,  status: boolean): Promise<User> {
     try {
       const sql = `
-        INSERT INTO users (name, password, email, status)
+        INSERT INTO users (name, email, password, status)
         VALUES (?, ?, ?, ?)
       `;
       const params: any[] = [name, password, email, status];
@@ -143,19 +143,18 @@ async updatePassword(id: number, newPassword: string): Promise<User | null> {
   }
 }
 
-
 async updateUser(
   id: number,
-  newUser?: { name?: string; password?: string; email?: string; status?: string }
+  newUser?: { name?: string; password?: string; email?: string; status?: boolean }
 ): Promise<User | null> {
   try {
     const { name, password, email, status } = newUser || {};
 
     const sql = `
-      UPDATE users
-      SET name = ?, password = ?, email = ?, status = ?
-      WHERE id = ?
-    `;
+          UPDATE users
+          SET name = ?, password = ?, email = ?, status = ?
+          WHERE id = ?
+        `;
 
     const params: any[] = [name, password, email, status, id];
     const [result]: any = await query(sql, params);
@@ -262,7 +261,7 @@ async filterUser(filter: string, email?: string, name?: string): Promise<User[]>
 async iniciarSesion(email: string, password: string): Promise<User | null> {
   try {
     const sqlSelect = `
-      SELECT id, name, password, email, status
+      SELECT id, name,email, password, status
       FROM users
       WHERE email = ? AND password = ?
     `;
@@ -360,8 +359,8 @@ async hasUserLoanedBook(userId: number, bookId: number): Promise<boolean> {
   try {
     const sql = `
       SELECT COUNT(*) AS count
-      FROM prestamos
-      WHERE id_User = ? AND id_Book = ? AND estado = true;
+      FROM Loans
+      WHERE id_User = ? AND id_Book = ? AND status = true;
     `;
     const params: any[] = [userId, bookId];
     const [rows]: any = await query(sql, params);
@@ -389,7 +388,7 @@ async performBookLoan(userId: number, bookId: number): Promise<void> {
     entregaDate.setDate(prestamoDate.getDate() + 30);  // Asumiendo un préstamo de 30 días
 
     const insertPrestamoSql = `
-      INSERT INTO prestamos (prestamo, entrega, estado, id_Book, id_User)
+      INSERT INTO Loans (loan, delivery, status, id_Book, id_User)
       VALUES (?, ?, true, ?, ?)
     `;
     const insertPrestamoParams: any[] = [prestamoDate, entregaDate, bookId, userId];
@@ -445,7 +444,7 @@ async devolverLibro(userId: number, bookId: number): Promise<string | null> {
 
     // Marcar el préstamo como devuelto
     const updatePrestamoSql = `
-      UPDATE prestamos
+      UPDATE Loans
       SET estado = false
       WHERE id_User = ? AND id_Book = ?
     `;
@@ -513,8 +512,8 @@ async eliminarReseña(userId: number, reviewId: String): Promise<boolean> {
     try {
       const sql = `
         SELECT COUNT(*) AS count
-        FROM prestamos
-        WHERE id_User = ? AND id_Book = ? AND estado = false;
+        FROM Loans
+        WHERE id_User = ? AND id_Book = ? AND status = false;
       `;
       const params: any[] = [userId, bookId];
       const [rows]: any = await query(sql, params);

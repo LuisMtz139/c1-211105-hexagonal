@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { ActiveUserUseCase } from '../../application/activeUserUseCase';
-import { CerarSesionUseCase } from "../../application/cerrarSesionUseCase";
+import { CerarSesionUseCase } from "../../application/singOffUseCase";
 
 
 
@@ -28,11 +28,22 @@ export class CerrarSesionController {
                     message: "no se ha podido cerrar sesion"
                 });
             }
-        } catch (error) {   
-            return res.status(500).send({
+        }catch (error) {   
+            if (error instanceof Error) {
+
+                if (error.message.startsWith('[')) {
+                  
+                  return res.status(400).send({
+                    status: "error",
+                    message: "Validation failed",
+                    errors: JSON.parse(error.message)
+                  });
+                }
+              }
+              return res.status(500).send({
                 status: "error",
-                message: "No es posible cerar sesion"
-            });
+                message: "An error occurred while adding the book."
+              });
         }
     }
 }

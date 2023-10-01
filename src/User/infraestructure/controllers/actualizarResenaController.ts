@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ActualizarResenaUseCase } from "../../application/actualizarResenaUseCase";
+import { ActualizarResenaUseCase } from "../../application/updateReseUseCase";
 
 export class ActualizarResenaController {
   constructor(
@@ -34,12 +34,22 @@ export class ActualizarResenaController {
           message: "No se pudo actualizar la reseña. Asegúrate de que la reseña existe y pertenece al usuario y libro indicados."
         });
       }
-    } catch (error) {
-      console.error("Error al actualizar la reseña:", error);
-      return res.status(500).json({
-        status: "error",
-        message: "Error interno al actualizar la reseña."
-      });
-    }
+    } catch (error) {   
+      if (error instanceof Error) {
+
+          if (error.message.startsWith('[')) {
+            
+            return res.status(400).send({
+              status: "error",
+              message: "Validation failed",
+              errors: JSON.parse(error.message)
+            });
+          }
+        }
+        return res.status(500).send({
+          status: "error",
+          message: "An error occurred while adding the book."
+        });
+  }
   }
 }

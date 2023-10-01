@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { EscribirResenaUseCase } from '../../application/escribirResenaUseCase';
+import { EscribirResenaUseCase } from '../../application/writeReseUseCase';
 
 export class EscribirResenaController {
   constructor(private readonly escribirResenaUseCase: EscribirResenaUseCase) {}
@@ -28,13 +28,22 @@ export class EscribirResenaController {
         data: [],
         message: "Error al escribir la reseña. Asegúrate de que el usuario ha prestado y devuelto el libro."
       });
-    } catch (error) {
-      console.error('Error al escribir la reseña:', error);
-      res.status(500).send({
-        status: "error",
-        data: [],
-        message: "Error interno del servidor al escribir la reseña."
-      });
-    }
+    } catch (error) {   
+      if (error instanceof Error) {
+
+          if (error.message.startsWith('[')) {
+            
+            return res.status(400).send({
+              status: "error",
+              message: "Validation failed",
+              errors: JSON.parse(error.message)
+            });
+          }
+        }
+        return res.status(500).send({
+          status: "error",
+          message: "An error occurred while adding the book."
+        });
+  }
   }
 }
