@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 # c1-211105-hexagonal
-=======
+
 # Repositorio c1-211105-hexagonal
 
 Este proyecto utiliza una arquitectura hexagonal y se conecta a una base de datos MySQL.
