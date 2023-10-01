@@ -5,7 +5,7 @@ export const reviewRoutes = express.Router();
 
 //Obtener todos las view
 reviewRoutes.get(
-    "/getAllReview", 
+    "/getAll", 
     getAllReviewsController.listAllReviews.bind(getAllReviewsController)
 )
 //Obtener solo un view

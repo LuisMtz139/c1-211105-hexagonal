@@ -32,12 +32,21 @@ export class GetReviewByUserController {
             message: "No se encontraron reseñas para el usuario especificado",
           });
         }
-      } catch (error) {
-        console.error("Error al obtener las reseñas del usuario:", error);
-        return res.status(500).json({
+      }catch (error) {
+        if (error instanceof Error) {
+  
+          if (error.message.startsWith('[')) {
+            
+            return res.status(400).send({
+              status: "error",
+              message: "Validation failed",
+              errors: JSON.parse(error.message)
+            });
+          }
+        }
+        return res.status(500).send({
           status: "error",
-          data: [],
-          message: "Ocurrió un error interno al obtener las reseñas del usuario.",
+          message: "An error occurred while adding the book."
         });
       }
     }
