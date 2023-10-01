@@ -6,7 +6,6 @@
 node_modules
 
 
-
 # Directorio de salida
 dist/
 
@@ -18,4 +17,6 @@ yarn-error.log
 .env
 
 # Directorios de caché
+
 .cache/
+

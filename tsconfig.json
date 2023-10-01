@@ -4,8 +4,6 @@
 
 
 
-    "experimentalDecorators": true,
-
     /* Projects */
     // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
     // "composite": true,                                /* Enable constraints that allow a TypeScript project to be used with project references. */
@@ -15,11 +13,11 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
+      
+                          /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. *                                /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
 
-    "target": "es2016",      
-                          /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
-
-    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    "target": "es2016",   
+    "experimentalDecorators": true,                                 /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
 
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
