@@ -13,8 +13,11 @@ Primero, clona el repositorio en tu máquina local.
 ```bash
 git clone hhttps://github.com/211105/c1-211105-hexagonal.git
 ``````
-
-### **Paso 2:** Configurar Variables de Entorno
+### **Paso 2:** Documentacion de postman
+```bash
+https://documenter.getpostman.com/view/19933973/2s9YJW6m5g
+``````
+### **Paso 3:** Configurar Variables de Entorno
 Dirigirse a la carpeta src/database/mysql.ts
 ```
 En este caso se uso la base de datos de MYSQL
@@ -29,7 +32,7 @@ connectionLimit: 10,
 
 ```
 
-### **Paso 3:** Instalación de Dependencias y Ejecución
+### **Paso 4:** Instalación de Dependencias y Ejecución
 
 instala las dependencias necesarias:
 
